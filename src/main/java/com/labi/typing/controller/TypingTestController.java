@@ -22,4 +22,14 @@ public class TypingTestController {
     public ResponseEntity<GeneratedTestDTO> getShortTest() {
         return ResponseEntity.ok(typingTestService.getShortTest());
     }
+
+    @GetMapping("/medium")
+    public ResponseEntity<GeneratedTestDTO> getMediumTest() {
+        return ResponseEntity.ok(typingTestService.getMediumTest());
+    }
+
+    @GetMapping("/long")
+    public ResponseEntity<GeneratedTestDTO> getLongTest() {
+        return ResponseEntity.ok(typingTestService.getLongTest());
+    }
 }
