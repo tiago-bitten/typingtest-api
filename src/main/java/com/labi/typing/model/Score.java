@@ -19,17 +19,13 @@ public class Score {
     private Long id_score;
 
     @Column(nullable = false)
-    private Integer totalLetters;
+    private Double wordsPerMinute;
 
     @Column(nullable = false)
-    private Integer incorrectTypedLetters;
+    private Double accuracy;
 
-    @Column(nullable = false)
-    private Double finishedTime;
-
-    public Score(Integer totalLetters, Integer incorrectTypedLetters, Double finishedTime) {
-        this.totalLetters = totalLetters;
-        this.incorrectTypedLetters = incorrectTypedLetters;
-        this.finishedTime = finishedTime;
+    public Score(Double wordsPerMinute, Double accuracy) {
+        this.wordsPerMinute = wordsPerMinute;
+        this.accuracy = accuracy;
     }
 }
