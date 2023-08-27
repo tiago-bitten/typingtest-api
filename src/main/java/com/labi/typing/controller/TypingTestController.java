@@ -1,6 +1,9 @@
 package com.labi.typing.controller;
 
 import com.labi.typing.DTO.GeneratedTestDTO;
+import com.labi.typing.service.TypingTestService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +15,11 @@ import java.util.List;
 @RequestMapping("api/typing-test")
 public class TypingTestController {
 
+    @Autowired
+    private TypingTestService typingTestService;
+
     @GetMapping("/short")
     public ResponseEntity<GeneratedTestDTO> getShortTest() {
-        return ResponseEntity.ok(new GeneratedTestDTO(List.of("Hello", "World")));
+        return ResponseEntity.ok(typingTestService.getShortTest());
     }
 }
