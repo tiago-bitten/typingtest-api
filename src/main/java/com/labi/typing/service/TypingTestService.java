@@ -82,7 +82,7 @@ public class TypingTestService {
 
         }
         catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error while reading file");
         }
     }
 }
