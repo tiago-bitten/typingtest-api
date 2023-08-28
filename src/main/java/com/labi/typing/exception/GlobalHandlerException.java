@@ -2,7 +2,9 @@ package com.labi.typing.exception;
 
 import com.labi.typing.exception.custom.EmailAlreadyExistsException;
 import com.labi.typing.exception.custom.UsernameAlreadyExistsException;
+import com.labi.typing.util.LoggerUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,11 +13,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.Instant;
 import java.util.Set;
 
+import static com.labi.typing.util.LoggerUtil.log;
+
 @ControllerAdvice
 public class GlobalHandlerException {
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ApiError> handleEmailAlreadyExistsException(HttpServletRequest request) {
+        log(EmailAlreadyExistsException.class.getSimpleName() + " was thrown");
         Set<Message> errors = Set.of(new Message("Email already exists"));
         ApiError apiError = new ApiError(
                 Instant.now(),
@@ -28,6 +33,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<ApiError> handleUsernameAlreadyExistsException(HttpServletRequest request) {
+        log(UsernameAlreadyExistsException.class.getSimpleName() + " was thrown");
         Set<Message> errors = Set.of(new Message("Username already exists"));
         ApiError apiError = new ApiError(
                 Instant.now(),
