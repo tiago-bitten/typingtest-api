@@ -13,7 +13,23 @@ public class UserService {
     private UserRepository userRepository;
 
     public void saveUser(UserRegisterDTO userRegisterDTO) {
+        if (findByUsername(userRegisterDTO.username()) != null) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        if (findByEmail(userRegisterDTO.email()) != null) {
+            throw new RuntimeException("Email already exists");
+        }
+
         userRepository.save(mapUserRegisterDTOToUser(userRegisterDTO));
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     private User mapUserRegisterDTOToUser(UserRegisterDTO userRegisterDTO) {
