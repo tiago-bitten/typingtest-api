@@ -39,7 +39,7 @@ public class Test {
     @Enumerated(EnumType.STRING)
     private TestDifficulty testDifficulty;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "fk_user")
     private User user;
 
