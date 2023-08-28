@@ -1,2 +1,8 @@
-package com.labi.typing.service;public class UserService {
+package com.labi.typing.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
 }
