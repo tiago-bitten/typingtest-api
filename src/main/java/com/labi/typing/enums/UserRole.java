@@ -1,6 +1,6 @@
 package com.labi.typing.enums;
 
-public enum Role {
+public enum UserRole {
     USER,
     ADMIN
 }

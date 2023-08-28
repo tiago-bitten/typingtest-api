@@ -1,7 +1,8 @@
 package com.labi.typing.model;
 
-import com.labi.typing.enums.Role;
+import com.labi.typing.enums.UserRole;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -20,16 +21,21 @@ public class User {
     @Column(nullable = false) @Length(min = 3, max = 20)
     private String username;
 
+    @Column(nullable = false)
+    @Email(message = "Invalid email address")
+    private String email;
+
     @Column(nullable = false) @Length(min = 6, max = 255)
     private String password;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole role;
 
-    public User(String username, String password, Role role) {
+    public User(String username, String password, String email, UserRole role) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.role = role;
     }
 }
