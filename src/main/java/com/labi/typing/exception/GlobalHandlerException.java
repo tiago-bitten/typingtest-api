@@ -1,6 +1,7 @@
 package com.labi.typing.exception;
 
 import com.labi.typing.exception.custom.EmailAlreadyExistsException;
+import com.labi.typing.exception.custom.UserNotFoundException;
 import com.labi.typing.exception.custom.UsernameAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,6 @@ import static com.labi.typing.util.LoggerUtil.log;
 
 @ControllerAdvice
 public class GlobalHandlerException {
-
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -56,5 +56,18 @@ public class GlobalHandlerException {
                 errors
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException ex, HttpServletRequest request) {
+        log(ex.getClass().getSimpleName() + " was thrown");
+        Set<Message> errors = Set.of(new Message("User not found"));
+        ApiError apiError = new ApiError(
+                Instant.now(),
+                HttpStatus.NOT_FOUND.value(),
+                request.getRequestURI(),
+                errors
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
 }

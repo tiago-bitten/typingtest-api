@@ -1,6 +1,13 @@
 package com.labi.typing.service;
 
 import com.labi.typing.DTO.GeneratedTestDTO;
+import com.labi.typing.DTO.TestRegisterDTO;
+import com.labi.typing.DTO.UserDTO;
+import com.labi.typing.exception.custom.UserNotFoundException;
+import com.labi.typing.model.Test;
+import com.labi.typing.model.User;
+import com.labi.typing.repository.TestRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -12,6 +19,12 @@ import java.util.Random;
 @Service
 public class TestService {
 
+    @Autowired
+    private TestRepository testRepository;
+
+    @Autowired
+    private UserService userService;
+
     private final List<String> shortWords;
     private final List<String> mediumWords;
     private final List<String> longWords;
@@ -20,6 +33,17 @@ public class TestService {
         shortWords = extractWords("src/main/resources/typingtest-words/short_words.txt");
         mediumWords = extractWords("src/main/resources/typingtest-words/medium_words.txt");
         longWords = extractWords("src/main/resources/typingtest-words/long_words.txt");
+    }
+
+    public void saveTest(TestRegisterDTO testRegisterDTO) {
+        if (userService.findByUsername(testRegisterDTO.user().username()) == null) {
+            throw new UserNotFoundException();
+        }
+        User user = userService.findByUsername(testRegisterDTO.user().username());
+        Test test = mapTestRegisterDTOToTest(testRegisterDTO);
+        test.setUser(user);
+
+        testRepository.save(test);
     }
 
     public GeneratedTestDTO getShortTest() {
@@ -73,5 +97,15 @@ public class TestService {
         catch (Exception e) {
             throw new Exception("Error while reading file");
         }
+    }
+
+    private Test mapTestRegisterDTOToTest(TestRegisterDTO testRegisterDTO) {
+        return new Test(
+                testRegisterDTO.testDate(),
+                testRegisterDTO.testText(),
+                testRegisterDTO.totalLetters(),
+                testRegisterDTO.incorrectLetters(),
+                testRegisterDTO.testDifficulty(),
+                null);
     }
 }

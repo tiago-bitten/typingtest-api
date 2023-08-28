@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -24,9 +23,9 @@ public class Test {
     private Long id_test;
 
     @Column(nullable = false)
-    private LocalDate dateTest;
+    private LocalDateTime testDate;
 
-    @Column(nullable = false) @Length(max = 1000)
+    @Column(nullable = false)
     private String testText;
 
     @Column(nullable = false)
@@ -46,8 +45,8 @@ public class Test {
     @OneToOne(mappedBy = "test")
     private Score score;
 
-    public Test(LocalDate dateTest, String testText, Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty, User user) {
-        this.dateTest = dateTest;
+    public Test(LocalDateTime testDate, String testText, Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty, User user) {
+        this.testDate = testDate;
         this.testText = testText;
         this.totalLetters = totalLetters;
         this.incorrectLetters = incorrectLetters;
