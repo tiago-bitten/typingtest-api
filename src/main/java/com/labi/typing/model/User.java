@@ -18,11 +18,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_user;
 
-    @Column(nullable = false) @Length(min = 3, max = 20)
+    @Column(nullable = false, unique = true) @Length(min = 2, max = 20)
     private String username;
 
-    @Column(nullable = false)
-    @Email(message = "Invalid email address")
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false) @Length(min = 6, max = 255)
