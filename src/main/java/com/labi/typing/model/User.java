@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id_user")
 @Entity
 @Table(name = "tb_user")
 public class User {
