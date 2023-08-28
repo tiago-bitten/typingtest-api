@@ -17,22 +17,11 @@ import static com.labi.typing.util.LoggerUtil.log;
 @ControllerAdvice
 public class GlobalHandlerException {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleException(Exception ex, HttpServletRequest request) {
-        log(ex.getClass().getName() + " was thrown");
-        Set<Message> errors = Set.of(new Message("Several errors occurred"));
-        ApiError apiError = new ApiError(
-                Instant.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                request.getRequestURI(),
-                errors
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
-    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
-        log(ex.getClass().getName() + " was thrown");
+        log(ex.getClass().getSimpleName() + " was thrown");
         Set<Message> errors = Set.of(new Message(ex.getBindingResult().getFieldError().getDefaultMessage()));
         ApiError apiError = new ApiError(
                 Instant.now(),
@@ -45,7 +34,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ApiError> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex, HttpServletRequest request) {
-        log(ex.getClass().getName() + " was thrown");
+        log(ex.getClass().getSimpleName() + " was thrown");
         Set<Message> errors = Set.of(new Message("Email already exists"));
         ApiError apiError = new ApiError(
                 Instant.now(),
@@ -58,7 +47,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<ApiError> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex, HttpServletRequest request) {
-        log(ex.getClass().getName() + " was thrown");
+        log(ex.getClass().getSimpleName() + " was thrown");
         Set<Message> errors = Set.of(new Message("Username already exists"));
         ApiError apiError = new ApiError(
                 Instant.now(),

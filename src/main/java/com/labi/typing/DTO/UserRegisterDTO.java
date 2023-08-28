@@ -7,13 +7,16 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 public record UserRegisterDTO(
-        @NotBlank(message = "Username is required") @Length(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+        @NotBlank(message = "Username cannot be blank")
+        @Length(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
         String username,
-        @NotBlank(message = "Email is required") @Email(message = "Invalid email address")
+        @NotBlank(message = "Email cannot be blank")
+        @Email(message = "Email should be valid")
         String email,
-        @NotBlank(message = "Password is required") @Length(min = 6, message = "Password must be at least 6 characters")
+        @NotBlank(message = "Password cannot be blank")
+        @Length(min = 6, message = "Password must be at least 6 characters")
         String password,
-        @NotBlank(message = "Role is required")
+        @NotNull(message = "Role cannot be null")
         UserRole userRole
 ) {
 }

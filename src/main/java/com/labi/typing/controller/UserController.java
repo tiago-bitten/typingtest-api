@@ -2,6 +2,7 @@ package com.labi.typing.controller;
 
 import com.labi.typing.DTO.UserRegisterDTO;
 import com.labi.typing.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserRegisterDTO userRegisterDTO) {
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
         userService.saveUser(userRegisterDTO);
         return ResponseEntity.noContent().build();
     }

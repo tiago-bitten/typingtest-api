@@ -18,23 +18,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_user;
 
-    @Column(nullable = false, unique = true) @Length(min = 2, max = 20)
+    @Column(nullable = false, unique = true) @Length(min = 3, max = 20)
     private String username;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false) @Length(min = 6, max = 255)
+    @Column(nullable = false) @Length(min = 6)
     private String password;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public User(String username, String password, String email, UserRole role) {
+    public User(String username, String email, String password,  UserRole role) {
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.password = password;
         this.role = role;
     }
 }

@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class TypingTestService {
+public class TestService {
 
     private final List<String> shortWords;
     private final List<String> mediumWords;
     private final List<String> longWords;
 
-    public TypingTestService() throws Exception {
-        this.shortWords = extractWords("src/main/resources/typingtest-words/short_words.txt");
-        this.mediumWords = extractWords("src/main/resources/typingtest-words/medium_words.txt");
-        this.longWords = extractWords("src/main/resources/typingtest-words/long_words.txt");
+    public TestService() throws Exception {
+        shortWords = extractWords("src/main/resources/typingtest-words/short_words.txt");
+        mediumWords = extractWords("src/main/resources/typingtest-words/medium_words.txt");
+        longWords = extractWords("src/main/resources/typingtest-words/long_words.txt");
     }
 
     public GeneratedTestDTO getShortTest() {
@@ -35,51 +35,40 @@ public class TypingTestService {
     }
 
     private List<String> generateTest(int amountShortWords, int amountMediumWords, int amountLongWords) {
-        List<String> copyShortWords = new ArrayList<>(shortWords);
-        List<String> copyMediumWords = new ArrayList<>(mediumWords);
-        List<String> copyLongWords = new ArrayList<>(longWords);
-
         List<String> test = new ArrayList<>();
 
         Random random = new Random();
 
-        generateRandomWords(test, copyShortWords, amountShortWords, random);
-        generateRandomWords(test, copyMediumWords, amountMediumWords, random);
-        generateRandomWords(test, copyLongWords, amountLongWords, random);
+        generateRandomWords(test, shortWords, amountShortWords, random);
+        generateRandomWords(test, mediumWords, amountMediumWords, random);
+        generateRandomWords(test, longWords, amountLongWords, random);
 
         return shuffleList(test);
     }
 
     private void generateRandomWords(List<String> test, List<String> sourceWords, int amount, Random random) {
+        List<String> availableWords = new ArrayList<>(sourceWords);
         for (int i = 0; i < amount; i++) {
-            int index = random.nextInt(sourceWords.size());
-            String randomWord = sourceWords.get(index);
-
-            if (!test.contains(randomWord)) {
-                test.add(randomWord);
-            } else {
-                i--;
-            }
+            String randomWord = availableWords.remove(random.nextInt(availableWords.size()));
+            test.add(randomWord);
         }
     }
 
     private List<String> shuffleList(List<String> list) {
+        List<String> shuffledList = new ArrayList<>(list);
         Random random = new Random();
-        for (int i = list.size() - 1; i > 0; i--) {
+        for (int i = shuffledList.size() - 1; i > 0; i--) {
             int index = random.nextInt(i + 1);
-            String temp = list.get(index);
-            list.set(index, list.get(i));
-            list.set(i, temp);
+            String temp = shuffledList.get(index);
+            shuffledList.set(index, shuffledList.get(i));
+            shuffledList.set(i, temp);
         }
-        return list;
+        return shuffledList;
     }
 
     private List<String> extractWords(String path) throws Exception {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-
-            String line = br.readLine();
-            return List.of(line.split(","));
-
+            return List.of(br.readLine().split(","));
         }
         catch (Exception e) {
             throw new Exception("Error while reading file");
