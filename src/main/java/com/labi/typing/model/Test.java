@@ -39,11 +39,19 @@ public class Test {
     @Enumerated(EnumType.STRING)
     private TestDifficulty testDifficulty;
 
-    public Test(LocalDate dateTest, String testText, Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty) {
+    @ManyToMany
+    @JoinColumn(name = "fk_user")
+    private User user;
+
+    @OneToOne(mappedBy = "test")
+    private Score score;
+
+    public Test(LocalDate dateTest, String testText, Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty, User user) {
         this.dateTest = dateTest;
         this.testText = testText;
         this.totalLetters = totalLetters;
         this.incorrectLetters = incorrectLetters;
         this.testDifficulty = testDifficulty;
+        this.user = user;
     }
 }

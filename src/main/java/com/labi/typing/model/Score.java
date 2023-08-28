@@ -24,8 +24,13 @@ public class Score {
     @Column(nullable = false)
     private Double accuracy;
 
-    public Score(Double wordsPerMinute, Double accuracy) {
+    @OneToOne
+    @JoinColumn(name = "fk_test")
+    private Test test;
+
+    public Score(Double wordsPerMinute, Double accuracy, Test test) {
         this.wordsPerMinute = wordsPerMinute;
         this.accuracy = accuracy;
+        this.test = test;
     }
 }
