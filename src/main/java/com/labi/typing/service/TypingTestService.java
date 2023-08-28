@@ -12,11 +12,11 @@ import java.util.Random;
 @Service
 public class TypingTestService {
 
-    private List<String> shortWords;
-    private List<String> mediumWords;
-    private List<String> longWords;
+    private final List<String> shortWords;
+    private final List<String> mediumWords;
+    private final List<String> longWords;
 
-    public TypingTestService() {
+    public TypingTestService() throws Exception {
         this.shortWords = extractWords("src/main/resources/typingtest-words/short_words.txt");
         this.mediumWords = extractWords("src/main/resources/typingtest-words/medium_words.txt");
         this.longWords = extractWords("src/main/resources/typingtest-words/long_words.txt");
@@ -74,7 +74,7 @@ public class TypingTestService {
         return list;
     }
 
-    private List<String> extractWords(String path) {
+    private List<String> extractWords(String path) throws Exception {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 
             String line = br.readLine();
@@ -82,7 +82,7 @@ public class TypingTestService {
 
         }
         catch (Exception e) {
-            throw new RuntimeException("Error while reading file");
+            throw new Exception("Error while reading file");
         }
     }
 }
