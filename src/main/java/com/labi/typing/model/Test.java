@@ -2,6 +2,7 @@ package com.labi.typing.model;
 
 import com.labi.typing.enums.TestDifficulty;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,6 +30,12 @@ public class Test {
     private String testText;
 
     @Column(nullable = false)
+    private Integer totalWords;
+
+    @Column(nullable = false)
+    private Integer finishedTime;
+
+    @Column(nullable = false)
     private Integer totalLetters;
 
     @Column(nullable = false)
@@ -45,9 +52,11 @@ public class Test {
     @OneToOne(mappedBy = "test")
     private Score score;
 
-    public Test(LocalDateTime testDate, String testText, Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty, User user) {
+    public Test(LocalDateTime testDate, String testText, Integer totalWords, Integer finishedTime, Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty, User user) {
         this.testDate = testDate;
         this.testText = testText;
+        this.totalWords = totalWords;
+        this.finishedTime = finishedTime;
         this.totalLetters = totalLetters;
         this.incorrectLetters = incorrectLetters;
         this.testDifficulty = testDifficulty;

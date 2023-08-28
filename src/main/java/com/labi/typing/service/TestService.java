@@ -23,6 +23,9 @@ public class TestService {
     private TestRepository testRepository;
 
     @Autowired
+    private ScoreService scoreService;
+
+    @Autowired
     private UserService userService;
 
     private final List<String> shortWords;
@@ -44,6 +47,7 @@ public class TestService {
         test.setUser(user);
 
         testRepository.save(test);
+        scoreService.registerScore(test);
     }
 
     public GeneratedTestDTO getShortTest() {
@@ -103,9 +107,12 @@ public class TestService {
         return new Test(
                 testRegisterDTO.testDate(),
                 testRegisterDTO.testText(),
+                testRegisterDTO.totalWords(),
+                testRegisterDTO.finishedTime(),
                 testRegisterDTO.totalLetters(),
                 testRegisterDTO.incorrectLetters(),
                 testRegisterDTO.testDifficulty(),
-                null);
+                null
+        );
     }
 }
