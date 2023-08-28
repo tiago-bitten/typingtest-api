@@ -27,6 +27,7 @@ public class ScoreService {
     }
 
     private Double calculateAccuracy(Integer letters, Integer incorrect) {
-        return (double) (letters - incorrect) / letters * 100;
+        double acc = ((double) (letters - incorrect)) / letters * 100;
+        return Math.round(acc * 100.0) / 100.0;
     }
 }
