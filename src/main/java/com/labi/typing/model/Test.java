@@ -1,5 +1,6 @@
 package com.labi.typing.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.labi.typing.enums.TestDifficulty;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -45,11 +46,12 @@ public class Test {
     @Enumerated(EnumType.STRING)
     private TestDifficulty testDifficulty;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_user")
+    @JsonBackReference
     private User user;
 
-    @OneToOne(mappedBy = "test")
+    @OneToOne(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Score score;
 
     public Test(LocalDateTime testDate, String testText, Integer totalWords, Integer finishedTime, Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty, User user) {
