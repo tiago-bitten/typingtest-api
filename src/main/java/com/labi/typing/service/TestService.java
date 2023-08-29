@@ -2,7 +2,6 @@ package com.labi.typing.service;
 
 import com.labi.typing.DTO.GeneratedTestDTO;
 import com.labi.typing.DTO.TestRegisterDTO;
-import com.labi.typing.DTO.UserDTO;
 import com.labi.typing.exception.custom.UserNotFoundException;
 import com.labi.typing.model.Test;
 import com.labi.typing.model.User;
