@@ -1,6 +1,6 @@
 package com.labi.typing.DTO;
 
-public record ScoreDTO(
+public record UserScoreDTO(
         Double wordsPerMinute,
         Double accuracy
 ) {

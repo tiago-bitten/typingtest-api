@@ -1,6 +1,6 @@
 package com.labi.typing.service;
 
-import com.labi.typing.DTO.GeneratedTestDTO;
+import com.labi.typing.DTO.TestGeneratedDTO;
 import com.labi.typing.DTO.TestRegisterDTO;
 import com.labi.typing.exception.custom.UserNotFoundException;
 import com.labi.typing.model.Test;
@@ -49,16 +49,16 @@ public class TestService {
         scoreService.registerScore(test);
     }
 
-    public GeneratedTestDTO getShortTest() {
-        return new GeneratedTestDTO(generateTest(5, 3, 2));
+    public TestGeneratedDTO getShortTest() {
+        return new TestGeneratedDTO(generateTest(5, 3, 2));
     }
 
-    public GeneratedTestDTO getMediumTest() {
-        return new GeneratedTestDTO(generateTest(4, 7, 4));
+    public TestGeneratedDTO getMediumTest() {
+        return new TestGeneratedDTO(generateTest(4, 7, 4));
     }
 
-    public GeneratedTestDTO getLongTest() {
-        return new GeneratedTestDTO(generateTest(4, 9, 7));
+    public TestGeneratedDTO getLongTest() {
+        return new TestGeneratedDTO(generateTest(4, 9, 7));
     }
 
     private List<String> generateTest(int amountShortWords, int amountMediumWords, int amountLongWords) {

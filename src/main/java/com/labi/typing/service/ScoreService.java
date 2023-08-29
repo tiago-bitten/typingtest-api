@@ -1,16 +1,13 @@
 package com.labi.typing.service;
 
-import com.labi.typing.DTO.ScoreDTO;
+import com.labi.typing.DTO.UserScoreDTO;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
 import com.labi.typing.repository.ScoreRepository;
-import com.labi.typing.util.ModelMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.labi.typing.util.ModelMapperUtil.map;
 
 @Service
 public class ScoreService {
@@ -27,7 +24,7 @@ public class ScoreService {
         scoreRepository.save(score);
     }
 
-    public List<ScoreDTO> getUserScore(Long id) {
+    public List<UserScoreDTO> getUserScore(Long id) {
         return scoreRepository.findUserScores(id).stream()
                 .map(this::mapScoreToScoreDTO)
                 .toList();
@@ -43,7 +40,7 @@ public class ScoreService {
         return Math.round(acc * 100.0) / 100.0;
     }
 
-    private ScoreDTO mapScoreToScoreDTO(Score score) {
-        return new ScoreDTO(score.getWordsPerMinute(), score.getAccuracy());
+    private UserScoreDTO mapScoreToScoreDTO(Score score) {
+        return new UserScoreDTO(score.getWordsPerMinute(), score.getAccuracy());
     }
 }

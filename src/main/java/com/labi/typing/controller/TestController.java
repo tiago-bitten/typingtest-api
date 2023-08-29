@@ -1,11 +1,9 @@
 package com.labi.typing.controller;
 
-import com.labi.typing.DTO.GeneratedTestDTO;
+import com.labi.typing.DTO.TestGeneratedDTO;
 import com.labi.typing.DTO.TestRegisterDTO;
-import com.labi.typing.DTO.UserDTO;
 import com.labi.typing.service.TestService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +23,17 @@ public class TestController {
     }
 
     @GetMapping("/short")
-    public ResponseEntity<GeneratedTestDTO> getShortTest() {
+    public ResponseEntity<TestGeneratedDTO> getShortTest() {
         return new ResponseEntity<>(typingTestService.getShortTest(), HttpStatus.OK);
     }
 
     @GetMapping("/medium")
-    public ResponseEntity<GeneratedTestDTO> getMediumTest() {
+    public ResponseEntity<TestGeneratedDTO> getMediumTest() {
         return new ResponseEntity<>(typingTestService.getMediumTest(), HttpStatus.OK);
     }
 
     @GetMapping("/long")
-    public ResponseEntity<GeneratedTestDTO> getLongTest() {
+    public ResponseEntity<TestGeneratedDTO> getLongTest() {
         return new ResponseEntity<>(typingTestService.getLongTest(), HttpStatus.OK);
     }
 }
