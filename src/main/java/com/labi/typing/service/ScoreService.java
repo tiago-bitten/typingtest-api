@@ -1,10 +1,16 @@
 package com.labi.typing.service;
 
+import com.labi.typing.DTO.ScoreDTO;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
 import com.labi.typing.repository.ScoreRepository;
+import com.labi.typing.util.ModelMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static com.labi.typing.util.ModelMapperUtil.map;
 
 @Service
 public class ScoreService {
@@ -21,6 +27,12 @@ public class ScoreService {
         scoreRepository.save(score);
     }
 
+    public List<ScoreDTO> getUserScore(Long id) {
+        return scoreRepository.findUserScores(id).stream()
+                .map(this::mapScoreToScoreDTO)
+                .toList();
+    }
+
     private Double calculateWPM(Integer words, Integer time) {
         double timeInMinutes = (double) time / 60;
         return words / timeInMinutes;
@@ -29,5 +41,9 @@ public class ScoreService {
     private Double calculateAccuracy(Integer letters, Integer incorrect) {
         double acc = ((double) (letters - incorrect)) / letters * 100;
         return Math.round(acc * 100.0) / 100.0;
+    }
+
+    private ScoreDTO mapScoreToScoreDTO(Score score) {
+        return new ScoreDTO(score.getWordsPerMinute(), score.getAccuracy());
     }
 }
