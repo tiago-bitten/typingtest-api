@@ -1,5 +1,8 @@
 package com.labi.typing.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,8 +27,9 @@ public class Score {
     @Column(nullable = false)
     private Double accuracy;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_test")
+    @JsonIgnore
     private Test test;
 
     public Score(Double wordsPerMinute, Double accuracy, Test test) {
