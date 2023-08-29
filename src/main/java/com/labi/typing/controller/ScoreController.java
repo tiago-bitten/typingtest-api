@@ -4,6 +4,7 @@ import com.labi.typing.DTO.ScoreDTO;
 import com.labi.typing.model.Score;
 import com.labi.typing.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,6 @@ public class ScoreController {
     @GetMapping("/{id}")
     public ResponseEntity<List<ScoreDTO>> getUserScore(@PathVariable Long id) {
         List<ScoreDTO> scores = scoreService.getUserScore(id);
-        return ResponseEntity.ok(scores);
+        return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 }
