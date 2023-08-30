@@ -5,7 +5,6 @@ import com.labi.typing.exception.custom.FileReadException;
 import com.labi.typing.exception.custom.UserNotFoundException;
 import com.labi.typing.exception.custom.UsernameAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,8 +18,7 @@ import static com.labi.typing.util.LoggerUtil.log;
 
 @ControllerAdvice
 public class GlobalHandlerException {
-
-
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
         log(ex.getClass().getSimpleName() + " was thrown");
