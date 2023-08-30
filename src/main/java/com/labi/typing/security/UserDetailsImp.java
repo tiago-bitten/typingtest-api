@@ -10,12 +10,16 @@ import java.util.List;
 
 public class UserDetailsImp implements UserDetails {
 
+    private Long userId;
     private String username;
+    private String email;
     private String password;
     private UserRole role;
 
-    public UserDetailsImp(String username, String password, UserRole role) {
+    public UserDetailsImp(Long userId, String username, String email, String password, UserRole role) {
+        this.userId = userId;
         this.username = username;
+        this.email = email;
         this.password = password;
         this.role = role;
     }
