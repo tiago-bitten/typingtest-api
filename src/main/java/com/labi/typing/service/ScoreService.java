@@ -1,6 +1,7 @@
 package com.labi.typing.service;
 
 import com.labi.typing.DTO.UserScoreDTO;
+import com.labi.typing.DTO.UserScoreTopDTO;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
 import com.labi.typing.repository.ScoreRepository;
@@ -30,6 +31,13 @@ public class ScoreService {
                 .toList();
     }
 
+    public List<UserScoreTopDTO> getTopScores() {
+        List<Score> scores = scoreRepository.findAllScore();
+        return scores.stream()
+                .map(this::mapScoreToScoreTopDTO)
+                .toList();
+    }
+
     private Double calculateWPM(Integer words, Integer time) {
         double timeInMinutes = (double) time / 60;
         return words / timeInMinutes;
@@ -42,5 +50,14 @@ public class ScoreService {
 
     private UserScoreDTO mapScoreToScoreDTO(Score score) {
         return new UserScoreDTO(score.getWordsPerMinute(), score.getAccuracy());
+    }
+
+    private UserScoreTopDTO mapScoreToScoreTopDTO(Score score) {
+        return new UserScoreTopDTO(
+                score.getTest().getUser().getUsername(),
+                score.getWordsPerMinute(),
+                score.getAccuracy(),
+                score.getTest().getTestDate().toString()
+        );
     }
 }

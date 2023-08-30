@@ -1,6 +1,7 @@
 package com.labi.typing.controller;
 
 import com.labi.typing.DTO.UserScoreDTO;
+import com.labi.typing.DTO.UserScoreTopDTO;
 import com.labi.typing.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,12 @@ public class ScoreController {
     @GetMapping("/{id}")
     public ResponseEntity<List<UserScoreDTO>> getUserScore(@PathVariable Long id) {
         List<UserScoreDTO> scores = scoreService.getUserScore(id);
+        return new ResponseEntity<>(scores, HttpStatus.OK);
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity<List<UserScoreTopDTO>> getTopScores() {
+        List<UserScoreTopDTO> scores = scoreService.getTopScores();
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 }
