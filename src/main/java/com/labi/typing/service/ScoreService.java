@@ -38,6 +38,13 @@ public class ScoreService {
                 .toList();
     }
 
+    public List<UserScoreTopDTO> getTopScoresShort() {
+        List<Score> scores = scoreRepository.findAllScoreShort();
+        return scores.stream()
+                .map(this::mapScoreToScoreTopDTO)
+                .toList();
+    }
+
     private Double calculateWPM(Integer words, Integer time) {
         double timeInMinutes = (double) time / 60;
         return words / timeInMinutes;

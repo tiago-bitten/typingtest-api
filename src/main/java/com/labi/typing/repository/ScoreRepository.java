@@ -13,4 +13,7 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
 
     @Query("SELECT s FROM Score s JOIN s.test t ORDER BY s.wordsPerMinute DESC")
     List<Score> findAllScore();
+
+    @Query("SELECT s FROM Score s JOIN s.test t WHERE t.testDifficulty = 'SHORT' ORDER BY s.wordsPerMinute DESC")
+    List<Score> findAllScoreShort();
 }

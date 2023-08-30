@@ -31,4 +31,10 @@ public class ScoreController {
         List<UserScoreTopDTO> scores = scoreService.getTopScores();
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
+
+    @GetMapping("/top/short")
+    public ResponseEntity<List<UserScoreTopDTO>> getTopScoresShort() {
+        List<UserScoreTopDTO> scores = scoreService.getTopScoresShort();
+        return new ResponseEntity<>(scores, HttpStatus.OK);
+    }
 }
