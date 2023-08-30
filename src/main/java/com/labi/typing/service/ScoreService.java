@@ -31,13 +31,6 @@ public class ScoreService {
                 .toList();
     }
 
-    public List<UserScoreTopDTO> getTopScores() {
-        List<Score> scores = scoreRepository.findAllScore();
-        return scores.stream()
-                .map(this::mapScoreToScoreTopDTO)
-                .toList();
-    }
-
     public List<UserScoreTopDTO> getTopScoresShort() {
         List<Score> scores = scoreRepository.findAllScoreShort();
         return scores.stream()
