@@ -2,6 +2,7 @@ package com.labi.typing.service;
 
 import com.labi.typing.DTO.TestGeneratedDTO;
 import com.labi.typing.DTO.TestRegisterDTO;
+import com.labi.typing.exception.custom.FileReadException;
 import com.labi.typing.exception.custom.UserNotFoundException;
 import com.labi.typing.model.Test;
 import com.labi.typing.model.User;
@@ -98,7 +99,7 @@ public class TestService {
             return List.of(br.readLine().split(","));
         }
         catch (Exception e) {
-            throw new Exception("Error while reading file");
+            throw new FileReadException();
         }
     }
 
