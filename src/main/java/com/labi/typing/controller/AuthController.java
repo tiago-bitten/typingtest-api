@@ -18,6 +18,8 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody @Valid AuthenticationDTO )
+//    @PostMapping("/login")
+//    public ResponseEntity<TokenDTO> login(@RequestBody @Valid AuthenticationDTO authenticationDTO) {
+//
+//    }
 }
