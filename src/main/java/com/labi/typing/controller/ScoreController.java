@@ -6,10 +6,7 @@ import com.labi.typing.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,9 +17,9 @@ public class ScoreController {
     @Autowired
     private ScoreService scoreService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<UserScoreDTO>> getUserScore(@PathVariable Long id) {
-        List<UserScoreDTO> scores = scoreService.getUserScore(id);
+    @GetMapping("/user")
+    public ResponseEntity<List<UserScoreDTO>> getUserScore(@RequestHeader("Authorization") String authHeader) {
+        List<UserScoreDTO> scores = scoreService.getUserScore(authHeader);
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 

@@ -4,7 +4,9 @@ import com.labi.typing.DTO.UserScoreDTO;
 import com.labi.typing.DTO.UserScoreTopDTO;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
+import com.labi.typing.model.User;
 import com.labi.typing.repository.ScoreRepository;
+import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,12 @@ public class ScoreService {
     @Autowired
     private ScoreRepository scoreRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     public void registerScore(Test test) {
         Score score = new Score();
         score.setAccuracy(calculateAccuracy(test.getTotalLetters(), test.getIncorrectLetters()));
@@ -25,8 +33,11 @@ public class ScoreService {
         scoreRepository.save(score);
     }
 
-    public List<UserScoreDTO> getUserScore(Long id) {
-        return scoreRepository.findUserScores(id).stream()
+    public List<UserScoreDTO> getUserScore(String authHeader) {
+        String token = jwtTokenProvider.resolveToken(authHeader);
+        String username = jwtTokenProvider.validateToken(token);
+
+        return scoreRepository.findAllUserScore(username).stream()
                 .map(this::mapScoreToScoreDTO)
                 .toList();
     }

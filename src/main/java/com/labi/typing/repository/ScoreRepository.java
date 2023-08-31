@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ScoreRepository extends JpaRepository<Score, Long> {
 
-    @Query("SELECT s FROM Score s JOIN s.test t WHERE t.user.id = ?1")
-    List<Score> findUserScores(Long id);
+    @Query("SELECT s FROM Score s JOIN s.test t WHERE t.user.username = ?1")
+    List<Score> findAllUserScore(String username);
 
     @Query("SELECT s FROM Score s JOIN s.test t WHERE t.testDifficulty = 'SHORT' ORDER BY s.wordsPerMinute DESC")
     List<Score> findAllScoreShort();
