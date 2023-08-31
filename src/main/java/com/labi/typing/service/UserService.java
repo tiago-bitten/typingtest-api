@@ -1,11 +1,9 @@
 package com.labi.typing.service;
 
 import com.labi.typing.DTO.UserRegisterDTO;
-import com.labi.typing.exception.custom.EmailAlreadyExistsException;
-import com.labi.typing.exception.custom.UsernameAlreadyExistsException;
+import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
-import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,13 +15,8 @@ public class UserService {
     private UserRepository userRepository;
 
     public void saveUser(UserRegisterDTO userRegisterDTO) {
-        if (findByUsername(userRegisterDTO.username()) != null) {
-            throw new UsernameAlreadyExistsException();
-        }
-
-        if (findByEmail(userRegisterDTO.email()) != null) {
-            throw new EmailAlreadyExistsException();
-        }
+        if (findByUsername(userRegisterDTO.username()) != null) throw new ValidationException("Username already exists");
+        if (findByEmail(userRegisterDTO.email()) != null) throw new ValidationException("Email already exists");
 
         User user = mapUserRegisterDTOToUser(userRegisterDTO);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));

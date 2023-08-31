@@ -3,7 +3,7 @@ package com.labi.typing.service;
 import com.labi.typing.DTO.TestGeneratedDTO;
 import com.labi.typing.DTO.TestRegisterDTO;
 import com.labi.typing.exception.custom.FileReadException;
-import com.labi.typing.exception.custom.UserNotFoundException;
+import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.Test;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.TestRepository;
@@ -45,7 +45,7 @@ public class TestService {
     public void saveTest(TestRegisterDTO testRegisterDTO, String authHeader) {
         String token = jwtTokenProvider.resolveToken(authHeader);
         User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) throw new UserNotFoundException();
+        if (user == null) throw new ValidationException("User not found");
 
         Test test = mapTestRegisterDTOToTest(testRegisterDTO);
         test.setUser(user);
