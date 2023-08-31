@@ -17,8 +17,8 @@ public class TestController {
     private TestService typingTestService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerTest(@RequestBody @Valid TestRegisterDTO testRegisterDTO) {
-        typingTestService.saveTest(testRegisterDTO);
+    public ResponseEntity<?> registerTest(@RequestBody @Valid TestRegisterDTO testRegisterDTO, @RequestHeader("Authorization") String authHeader) {
+        typingTestService.saveTest(testRegisterDTO, authHeader);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

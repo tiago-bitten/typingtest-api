@@ -7,6 +7,7 @@ import com.labi.typing.exception.custom.UserNotFoundException;
 import com.labi.typing.model.Test;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.TestRepository;
+import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,9 @@ public class TestService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     private final List<String> shortWords;
     private final List<String> mediumWords;
     private final List<String> longWords;
@@ -38,11 +42,11 @@ public class TestService {
         longWords = extractWords("src/main/resources/typingtest-words/long_words.txt");
     }
 
-    public void saveTest(TestRegisterDTO testRegisterDTO) {
-        if (userService.findByUsername(testRegisterDTO.user().username()) == null) {
-            throw new UserNotFoundException();
-        }
-        User user = userService.findByUsername(testRegisterDTO.user().username());
+    public void saveTest(TestRegisterDTO testRegisterDTO, String authHeader) {
+        String token = jwtTokenProvider.resolveToken(authHeader);
+        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
+        if (user == null) throw new UserNotFoundException();
+
         Test test = mapTestRegisterDTOToTest(testRegisterDTO);
         test.setUser(user);
 

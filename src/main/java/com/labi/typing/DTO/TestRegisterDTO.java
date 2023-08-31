@@ -20,8 +20,6 @@ public record TestRegisterDTO(
         @NotNull(message = "Incorrect letters cannot be null")
         Integer incorrectLetters,
         @NotNull(message = "Test difficulty cannot be null")
-        TestDifficulty testDifficulty,
-        @NotNull(message = "User cannot be null")
-        UserDTO user
+        TestDifficulty testDifficulty
 ) {
 }
