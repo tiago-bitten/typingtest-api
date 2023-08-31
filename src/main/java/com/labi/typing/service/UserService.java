@@ -7,6 +7,7 @@ import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
 import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +25,9 @@ public class UserService {
             throw new EmailAlreadyExistsException();
         }
 
-        userRepository.save(mapUserRegisterDTOToUser(userRegisterDTO));
+        User user = mapUserRegisterDTOToUser(userRegisterDTO);
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     public User findByUsername(String username) {
