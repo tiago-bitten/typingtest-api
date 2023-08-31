@@ -3,8 +3,6 @@ package com.labi.typing.exception;
 import com.labi.typing.exception.custom.FileReadException;
 import com.labi.typing.exception.custom.ValidationException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Validation;
-import jakarta.validation.executable.ValidateOnExecution;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
