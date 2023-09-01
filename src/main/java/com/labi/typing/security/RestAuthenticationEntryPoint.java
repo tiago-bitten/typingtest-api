@@ -27,7 +27,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
 
-        Set<Message> errors = Set.of(new Message("Username or password is incorrect"));
+        Set<Message> errors = Set.of(new Message("Not authorized"));
         ApiError apiError = new ApiError(
                 Instant.now(),
                 HttpStatus.UNAUTHORIZED.value(),

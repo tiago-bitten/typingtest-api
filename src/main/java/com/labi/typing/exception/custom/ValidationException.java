@@ -1,8 +1,17 @@
 package com.labi.typing.exception.custom;
 
+import org.springframework.http.HttpStatus;
+
 public class ValidationException extends RuntimeException {
 
-    public ValidationException(String message) {
+    private HttpStatus status;
+
+    public ValidationException(String message, HttpStatus status) {
         super(message);
+        this.status = status;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
     }
 }

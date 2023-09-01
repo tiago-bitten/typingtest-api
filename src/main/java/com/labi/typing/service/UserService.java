@@ -5,6 +5,7 @@ import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,12 @@ public class UserService {
     private UserRepository userRepository;
 
     public void saveUser(UserRegisterDTO userRegisterDTO) {
-        if (findByUsername(userRegisterDTO.username()) != null) throw new ValidationException("Username already exists");
-        if (findByEmail(userRegisterDTO.email()) != null) throw new ValidationException("Email already exists");
+        if (findByUsername(userRegisterDTO.username()) != null) {
+            throw new ValidationException("Username already exists", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if (findByEmail(userRegisterDTO.email()) != null) {
+            throw new ValidationException("Email already exists", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
 
         User user = mapUserRegisterDTOToUser(userRegisterDTO);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));

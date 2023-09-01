@@ -9,6 +9,7 @@ import com.labi.typing.model.User;
 import com.labi.typing.repository.TestRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -45,7 +46,9 @@ public class TestService {
     public void saveTest(TestRegisterDTO testRegisterDTO, String authHeader) {
         String token = jwtTokenProvider.resolveToken(authHeader);
         User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) throw new ValidationException("User not found");
+        if (user == null) {
+            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
 
         Test test = mapTestRegisterDTOToTest(testRegisterDTO);
         test.setUser(user);

@@ -49,10 +49,10 @@ public class GlobalHandlerException {
         Set<Message> errors = Set.of(new Message(ex.getMessage()));
         ApiError apiError = new ApiError(
                 Instant.now(),
-                HttpStatus.BAD_REQUEST.value(),
+                ex.getStatus().value(),
                 request.getRequestURI(),
                 errors
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+        return ResponseEntity.status(ex.getStatus()).body(apiError);
     }
 }
