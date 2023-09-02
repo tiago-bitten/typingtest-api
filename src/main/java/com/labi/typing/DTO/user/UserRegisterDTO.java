@@ -1,4 +1,4 @@
-package com.labi.typing.DTO;
+package com.labi.typing.DTO.user;
 
 import com.labi.typing.enums.UserRole;
 import jakarta.validation.constraints.Email;
