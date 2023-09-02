@@ -1,4 +1,4 @@
-package com.labi.typing.DTO;
+package com.labi.typing.DTO.test;
 
 import com.labi.typing.enums.TestDifficulty;
 import jakarta.validation.constraints.NotBlank;

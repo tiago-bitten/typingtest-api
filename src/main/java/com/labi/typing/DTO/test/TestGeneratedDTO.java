@@ -1,4 +1,4 @@
-package com.labi.typing.DTO;
+package com.labi.typing.DTO.test;
 
 import java.util.List;
 
