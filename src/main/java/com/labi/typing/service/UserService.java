@@ -1,6 +1,7 @@
 package com.labi.typing.service;
 
 import com.labi.typing.DTO.UserRegisterDTO;
+import com.labi.typing.enums.UserRole;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
@@ -37,6 +38,11 @@ public class UserService {
     }
 
     private User mapUserRegisterDTOToUser(UserRegisterDTO userRegisterDTO) {
-        return new User(userRegisterDTO.username(), userRegisterDTO.email(), userRegisterDTO.password(), userRegisterDTO.userRole());
+        return new User(
+                userRegisterDTO.username(),
+                userRegisterDTO.email(),
+                userRegisterDTO.password(),
+                UserRole.USER
+        );
     }
 }

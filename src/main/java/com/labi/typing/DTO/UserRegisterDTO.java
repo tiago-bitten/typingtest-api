@@ -15,8 +15,6 @@ public record UserRegisterDTO(
         String email,
         @NotBlank(message = "Password cannot be blank")
         @Length(min = 6, message = "Password must be at least 6 characters")
-        String password,
-        @NotNull(message = "Role cannot be null")
-        UserRole userRole
+        String password
 ) {
 }
