@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 import java.time.Instant;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class GlobalHandlerException {
                 request.getRequestURI(),
                 errors
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(FileReadException.class)
@@ -42,20 +43,20 @@ public class GlobalHandlerException {
                 request.getRequestURI(),
                 errors
         );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ApiError> handleValidationException(ValidationException ex, HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleValidationException(ValidationException ex, WebRequest request) {
         log(ex.getClass().getSimpleName() + " was thrown");
         Set<Message> errors = Set.of(new Message(ex.getMessage()));
         ApiError apiError = new ApiError(
                 Instant.now(),
                 ex.getStatus().value(),
-                request.getRequestURI(),
+                request.getContextPath(),
                 errors
         );
-        return ResponseEntity.status(ex.getStatus()).body(apiError);
+        return new ResponseEntity<>(apiError, ex.getStatus());
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
@@ -64,24 +65,24 @@ public class GlobalHandlerException {
         Set<Message> errors = Set.of(new Message("Username not found"));
         ApiError apiError = new ApiError(
                 Instant.now(),
-                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
                 request.getRequestURI(),
                 errors
         );
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
+
+        return new ResponseEntity<>(apiError, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiError> handleBadCredentialsException(BadCredentialsException ex, HttpServletRequest request) {
         log(ex.getClass().getSimpleName() + " was thrown");
-        Set<Message> errors = Set.of(new Message("Wrong password"));
+        Set<Message> errors = Set.of(new Message("Username or password is incorrect"));
         ApiError apiError = new ApiError(
                 Instant.now(),
                 HttpStatus.UNAUTHORIZED.value(),
                 request.getRequestURI(),
                 errors
         );
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
-
 }
