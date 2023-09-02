@@ -1,9 +1,11 @@
 package com.labi.typing.controller;
 
+import com.labi.typing.DTO.user.UserUpdatePasswordDTO;
 import com.labi.typing.DTO.user.UserUpdateUsernameDTO;
 import com.labi.typing.DTO.user.UserRegisterDTO;
 import com.labi.typing.service.UserService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +26,16 @@ public class UserController {
     }
 
     @PutMapping("/profile/username")
-    public ResponseEntity<?> updateUsername(@RequestBody @Valid UserUpdateUsernameDTO userProfileDTO,
+    public ResponseEntity<?> updateUsername(@RequestBody @Valid UserUpdateUsernameDTO dto,
                                             @RequestHeader("Authorization") String authHeader) {
-        userService.updateUsername(userProfileDTO, authHeader);
+        userService.updateUsername(dto, authHeader);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/profile/password")
+    public ResponseEntity<?> updatePassword(@RequestBody @Valid UserUpdatePasswordDTO dto,
+                                            @RequestHeader("Authorization") String authHeader) {
+        userService.updatePassword(dto, authHeader);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

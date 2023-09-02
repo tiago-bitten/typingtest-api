@@ -1,5 +1,6 @@
 package com.labi.typing.service;
 
+import com.labi.typing.DTO.user.UserUpdatePasswordDTO;
 import com.labi.typing.DTO.user.UserUpdateUsernameDTO;
 import com.labi.typing.DTO.user.UserRegisterDTO;
 import com.labi.typing.enums.UserRole;
@@ -51,6 +52,27 @@ public class UserService {
         }
 
         user.setUsername(userUpdateUsernameDTO.username());
+    }
+
+    @Transactional
+    public void updatePassword(UserUpdatePasswordDTO dto, String authHeader) {
+        String token = jwtTokenProvider.resolveToken(authHeader);
+        User user = findByUsername(jwtTokenProvider.validateToken(token));
+        if (user == null) {
+            throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (!dto.password().equals(dto.confirmPassword())) {
+            throw new ValidationException("Password doesnt match", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        String newPassword = new BCryptPasswordEncoder().encode(dto.password());
+
+        if (new BCryptPasswordEncoder().matches(user.getPassword(), newPassword)) {
+            throw new ValidationException("Password cannot be the same", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        user.setPassword(newPassword);
     }
 
     public User findByUsername(String username) {
