@@ -1,7 +1,7 @@
 package com.labi.typing.controller;
 
-import com.labi.typing.DTO.UserScoreDTO;
-import com.labi.typing.DTO.UserScoreTopDTO;
+import com.labi.typing.DTO.user.UserScoreDTO;
+import com.labi.typing.DTO.user.UserScoreTopDTO;
 import com.labi.typing.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

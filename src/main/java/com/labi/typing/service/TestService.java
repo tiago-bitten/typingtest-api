@@ -1,7 +1,7 @@
 package com.labi.typing.service;
 
-import com.labi.typing.DTO.TestGeneratedDTO;
-import com.labi.typing.DTO.TestRegisterDTO;
+import com.labi.typing.DTO.test.TestGeneratedDTO;
+import com.labi.typing.DTO.test.TestRegisterDTO;
 import com.labi.typing.exception.custom.FileReadException;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.Test;

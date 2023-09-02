@@ -1,10 +1,9 @@
 package com.labi.typing.service;
 
-import com.labi.typing.DTO.UserScoreDTO;
-import com.labi.typing.DTO.UserScoreTopDTO;
+import com.labi.typing.DTO.user.UserScoreDTO;
+import com.labi.typing.DTO.user.UserScoreTopDTO;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
-import com.labi.typing.model.User;
 import com.labi.typing.repository.ScoreRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
