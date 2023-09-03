@@ -23,6 +23,9 @@ public class UserService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     public void saveUser(UserRegisterDTO userRegisterDTO) {
         if (findByUsername(userRegisterDTO.username()) != null) {
             throw new ValidationException("Username already exists", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -60,9 +63,7 @@ public class UserService {
             throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        String currentPassword = dto.currentPassword();
-
-        if (!new BCryptPasswordEncoder().matches(currentPassword, user.getPassword())) {
+        if (!encoder.matches(dto.currentPassword(), user.getPassword())) {
             throw new ValidationException("Current Password doenst match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -70,12 +71,11 @@ public class UserService {
             throw new ValidationException("Password doesnt match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        if (new BCryptPasswordEncoder().matches(dto.newPassword(), user.getPassword())) {
+        if (encoder.matches(dto.newPassword(), user.getPassword())) {
             throw new ValidationException("Password cannot be the same", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        String newPassword = new BCryptPasswordEncoder().encode(dto.newPassword());
-        user.setPassword(newPassword);
+        user.setPassword(encoder.encode(dto.newPassword()));
     }
 
     public User findByUsername(String username) {
