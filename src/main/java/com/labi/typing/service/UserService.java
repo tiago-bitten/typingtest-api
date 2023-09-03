@@ -1,8 +1,8 @@
 package com.labi.typing.service;
 
+import com.labi.typing.DTO.user.UserRegisterDTO;
 import com.labi.typing.DTO.user.UserUpdatePasswordDTO;
 import com.labi.typing.DTO.user.UserUpdateUsernameDTO;
-import com.labi.typing.DTO.user.UserRegisterDTO;
 import com.labi.typing.enums.UserRole;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
@@ -10,11 +10,9 @@ import com.labi.typing.repository.UserRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService {
@@ -62,16 +60,21 @@ public class UserService {
             throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        if (!dto.password().equals(dto.confirmPassword())) {
+        String currentPassword = dto.currentPassword();
+
+        if (!new BCryptPasswordEncoder().matches(currentPassword, user.getPassword())) {
+            throw new ValidationException("Current Password doenst match", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (!dto.newPassword().equals(dto.confirmNewPassword())) {
             throw new ValidationException("Password doesnt match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        String newPassword = new BCryptPasswordEncoder().encode(dto.password());
-
-        if (new BCryptPasswordEncoder().matches(user.getPassword(), newPassword)) {
+        if (new BCryptPasswordEncoder().matches(dto.newPassword(), user.getPassword())) {
             throw new ValidationException("Password cannot be the same", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
+        String newPassword = new BCryptPasswordEncoder().encode(dto.newPassword());
         user.setPassword(newPassword);
     }
 
