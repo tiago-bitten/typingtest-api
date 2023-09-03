@@ -30,29 +30,34 @@ public class UserService {
         if (findByUsername(userRegisterDTO.username()) != null) {
             throw new ValidationException("Username already exists", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+
         if (findByEmail(userRegisterDTO.email()) != null) {
             throw new ValidationException("Email already exists", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         User user = mapUserRegisterDTOToUser(userRegisterDTO);
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     @Transactional
-    public void updateUsername(UserUpdateUsernameDTO userUpdateUsernameDTO, String authHeader) {
-        User existsUser = findByUsername(userUpdateUsernameDTO.username());
-        if (existsUser != null) {
-            throw new ValidationException("Username already exists", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
+    public void updateUsername(UserUpdateUsernameDTO dto, String authHeader) {
         String token = jwtTokenProvider.resolveToken(authHeader);
         User user = findByUsername(jwtTokenProvider.validateToken(token));
         if (user == null) {
             throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        user.setUsername(userUpdateUsernameDTO.username());
+        if (!encoder.matches(dto.currentPassword(), user.getPassword())) {
+            throw new ValidationException("Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        User existsUser = findByUsername(dto.username());
+        if (existsUser != null) {
+            throw new ValidationException("Username already exists", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        user.setUsername(dto.username());
     }
 
     @Transactional
@@ -64,11 +69,11 @@ public class UserService {
         }
 
         if (!encoder.matches(dto.currentPassword(), user.getPassword())) {
-            throw new ValidationException("Current Password doenst match", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ValidationException("Current Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         if (!dto.newPassword().equals(dto.confirmNewPassword())) {
-            throw new ValidationException("Password doesnt match", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ValidationException("Passwords don't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         if (encoder.matches(dto.newPassword(), user.getPassword())) {
