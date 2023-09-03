@@ -1,15 +1,11 @@
 package com.labi.typing.service;
 
-import com.labi.typing.DTO.user.UserRegisterDTO;
-import com.labi.typing.DTO.user.UserResetPasswordDTO;
-import com.labi.typing.DTO.user.UserUpdatePasswordDTO;
-import com.labi.typing.DTO.user.UserUpdateUsernameDTO;
+import com.labi.typing.DTO.user.*;
 import com.labi.typing.enums.UserRole;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
-import com.labi.typing.util.ResetPasswordUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,6 +41,25 @@ public class UserService {
         User user = mapUserRegisterDTOToUser(dto);
         user.setPassword(bcrypt.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void deleteUser(UserDeleteAccountDTO dto, String authHeader) {
+        String token = jwtTokenProvider.resolveToken(authHeader);
+        User user = findByUsername(jwtTokenProvider.validateToken(token));
+        if (user == null) {
+            throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (!dto.password().equals(dto.confirmPassword())) {
+            throw new ValidationException("Passwords don't match", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (!bcrypt.matches(dto.password(), user.getPassword())) {
+            throw new ValidationException("Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        userRepository.delete(user);
     }
 
     @Transactional

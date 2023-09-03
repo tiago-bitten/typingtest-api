@@ -3,12 +3,10 @@ package com.labi.typing.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.labi.typing.enums.TestDifficulty;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 
@@ -54,7 +52,8 @@ public class Test {
     @OneToOne(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Score score;
 
-    public Test(LocalDateTime testDate, String testText, Integer totalWords, Integer finishedTime, Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty, User user) {
+    public Test(LocalDateTime testDate, String testText, Integer totalWords, Integer finishedTime,
+                Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty, User user) {
         this.testDate = testDate;
         this.testText = testText;
         this.totalWords = totalWords;

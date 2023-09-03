@@ -2,11 +2,14 @@ package com.labi.typing.service;
 
 import com.labi.typing.DTO.user.UserScoreDTO;
 import com.labi.typing.DTO.user.UserScoreTopDTO;
+import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
+import com.labi.typing.model.User;
 import com.labi.typing.repository.ScoreRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,11 +35,14 @@ public class ScoreService {
         scoreRepository.save(score);
     }
 
-    public List<UserScoreDTO> getUserScore(String authHeader) {
+    public List<UserScoreDTO> getUserScores(String authHeader) {
         String token = jwtTokenProvider.resolveToken(authHeader);
-        String username = jwtTokenProvider.validateToken(token);
+        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
+        if (user == null) {
+            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
 
-        return scoreRepository.findAllUserScore(username).stream()
+        return scoreRepository.findAllUserScores(user.getUsername()).stream()
                 .map(this::mapScoreToScoreDTO)
                 .toList();
     }

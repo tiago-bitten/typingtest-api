@@ -1,6 +1,5 @@
 package com.labi.typing.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.labi.typing.enums.UserRole;
 import jakarta.persistence.*;

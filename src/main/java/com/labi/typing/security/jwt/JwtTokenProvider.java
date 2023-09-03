@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +21,11 @@ public class JwtTokenProvider {
     public String generateToken(String username) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            String token = JWT.create()
+            return JWT.create()
                     .withIssuer("labi")
                     .withSubject(username)
                     .withExpiresAt(new Date(System.currentTimeMillis() + expiration))
                     .sign(algorithm);
-
-            return token;
         }
         catch (JWTCreationException e) {
             throw new RuntimeException(e + "Error while creating JWT token");

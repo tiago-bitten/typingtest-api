@@ -1,17 +1,12 @@
 package com.labi.typing.controller;
 
-import com.labi.typing.DTO.user.UserResetPasswordDTO;
-import com.labi.typing.DTO.user.UserUpdatePasswordDTO;
-import com.labi.typing.DTO.user.UserUpdateUsernameDTO;
-import com.labi.typing.DTO.user.UserRegisterDTO;
+import com.labi.typing.DTO.user.*;
 import com.labi.typing.service.UserService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
@@ -43,6 +38,13 @@ public class UserController {
     public ResponseEntity<?> updatePassword(@RequestBody @Valid UserUpdatePasswordDTO dto,
                                             @RequestHeader("Authorization") String authHeader) {
         userService.updatePassword(dto, authHeader);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/profile/delete")
+    public ResponseEntity<?> deleteAccount(@RequestBody @Valid UserDeleteAccountDTO dto,
+                                           @RequestHeader("Authorization") String authHeader) {
+        userService.deleteUser(dto, authHeader);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

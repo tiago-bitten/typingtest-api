@@ -19,7 +19,7 @@ public class ScoreController {
 
     @GetMapping("/user")
     public ResponseEntity<List<UserScoreDTO>> getUserScore(@RequestHeader("Authorization") String authHeader) {
-        List<UserScoreDTO> scores = scoreService.getUserScore(authHeader);
+        List<UserScoreDTO> scores = scoreService.getUserScores(authHeader);
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 

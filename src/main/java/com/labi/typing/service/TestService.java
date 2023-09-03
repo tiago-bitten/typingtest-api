@@ -28,14 +28,14 @@ public class TestService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    public void saveTest(TestRegisterDTO testRegisterDTO, String authHeader) {
+    public void saveTest(TestRegisterDTO dto, String authHeader) {
         String token = jwtTokenProvider.resolveToken(authHeader);
         User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
         if (user == null) {
             throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        Test test = mapTestRegisterDTOToTest(testRegisterDTO);
+        Test test = mapTestRegisterDTOToTest(dto);
         test.setUser(user);
 
         testRepository.save(test);
