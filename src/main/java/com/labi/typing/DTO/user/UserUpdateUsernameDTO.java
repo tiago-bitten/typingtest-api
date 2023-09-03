@@ -9,6 +9,6 @@ public record UserUpdateUsernameDTO(
 
         @NotBlank(message = "Username cannot be blank")
         @Length(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
-        String username
+        String newUsername
 ) {
 }

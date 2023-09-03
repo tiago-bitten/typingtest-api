@@ -5,6 +5,7 @@ import com.labi.typing.DTO.TokenDTO;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,8 +28,8 @@ public class AuthController {
     public ResponseEntity<TokenDTO> login(@RequestBody @Valid AuthenticationDTO authenticationDTO) {
         var usernamepassword = new UsernamePasswordAuthenticationToken(authenticationDTO.username(), authenticationDTO.password());
         var auth = authenticationManager.authenticate(usernamepassword);
-        var token = jwtTokenProvider.generateToken(auth.getName());
+        String token = jwtTokenProvider.generateToken(auth.getName());
 
-        return ResponseEntity.ok(new TokenDTO(token));
+        return new ResponseEntity<>(new TokenDTO(token), HttpStatus.OK);
     }
 }

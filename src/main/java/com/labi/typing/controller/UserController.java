@@ -1,5 +1,6 @@
 package com.labi.typing.controller;
 
+import com.labi.typing.DTO.user.UserResetPasswordDTO;
 import com.labi.typing.DTO.user.UserUpdatePasswordDTO;
 import com.labi.typing.DTO.user.UserUpdateUsernameDTO;
 import com.labi.typing.DTO.user.UserRegisterDTO;
@@ -20,9 +21,15 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
-        userService.saveUser(userRegisterDTO);
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegisterDTO dto) {
+        userService.saveUser(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid UserResetPasswordDTO dto) {
+        userService.resetPassword(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/profile/username")
