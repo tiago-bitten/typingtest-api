@@ -20,6 +20,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String[] POST_WHITELIST = {
+            "/api/user/register",
+            "/api/auth/login",
+            "/api/user/forgot-password"
+    };
+
+    private static final String[] GET_WHITELIST = {
+            "/api/home"
+    };
+
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
@@ -32,10 +42,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/api/user/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/user/forgot-password").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/home").permitAll()
+                        .requestMatchers(HttpMethod.POST, POST_WHITELIST).permitAll()
+                        .requestMatchers(HttpMethod.GET, GET_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
