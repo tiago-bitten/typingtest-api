@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/user")
@@ -24,6 +27,13 @@ public class UserController {
     @PostMapping("/forgot-password")
     public ResponseEntity<?> resetPassword(@RequestBody @Valid UserResetPasswordDTO dto) {
         userService.resetPassword(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/profile/image")
+    public ResponseEntity<?> uploadProfileImage(@RequestParam("file") MultipartFile file,
+                                                @RequestHeader("Authorization") String authHeader) throws IOException {
+        userService.uploadProfileImage(file, authHeader);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

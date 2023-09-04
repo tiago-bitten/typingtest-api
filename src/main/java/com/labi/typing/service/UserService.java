@@ -11,7 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
+import static com.labi.typing.util.ProfileImageUtil.upload;
 import static com.labi.typing.util.ResetPasswordUtil.generateRandomPassword;
 
 @Service
@@ -115,6 +119,18 @@ public class UserService {
         }
 
         user.setPassword(bcrypt.encode(dto.newPassword()));
+    }
+
+    @Transactional
+    public void uploadProfileImage(MultipartFile file, String authHeader) throws IOException {
+        String token = jwtTokenProvider.resolveToken(authHeader);
+        User user = findByUsername(jwtTokenProvider.validateToken(token));
+        if (user == null) {
+            throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        String profileImage = upload(file);
+        user.setProfileImgUrl(profileImage);
     }
 
     public User findByUsername(String username) {
