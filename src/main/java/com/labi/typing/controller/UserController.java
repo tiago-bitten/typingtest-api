@@ -18,6 +18,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileDTO> getProfile(@RequestHeader("Authorization") String authHeader) {
+        return new ResponseEntity<>(userService.getProfile(authHeader), HttpStatus.OK);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegisterDTO dto) {
         userService.saveUser(dto);

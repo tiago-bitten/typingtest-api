@@ -133,6 +133,16 @@ public class UserService {
         user.setProfileImgUrl(profileImage);
     }
 
+    public UserProfileDTO getProfile(String authHeader) {
+        String token = jwtTokenProvider.resolveToken(authHeader);
+        User user = findByUsername(jwtTokenProvider.validateToken(token));
+        if (user == null) {
+            throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return new UserProfileDTO(user.getUsername(), user.getEmail(), user.getProfileImgUrl());
+    }
+
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
