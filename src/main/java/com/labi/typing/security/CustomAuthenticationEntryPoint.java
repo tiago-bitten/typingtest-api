@@ -3,6 +3,7 @@ package com.labi.typing.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.labi.typing.exception.ApiError;
 import com.labi.typing.exception.Message;
+import com.labi.typing.util.LoggerUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Set;
 
+import static com.labi.typing.util.LoggerUtil.log;
+
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -27,6 +30,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                          AuthenticationException authException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
+        log(authException.getClass().getSimpleName() + " was thrown");
 
         Set<Message> errors = Set.of(new Message(authException.getMessage()));
         ApiError apiError = new ApiError(
