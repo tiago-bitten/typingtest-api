@@ -63,6 +63,10 @@ public class UserService {
             throw new ValidationException("Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
+        if (user.getUsername().equals("demo")) {
+            throw new ValidationException("Demo account cannot be deleted", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
         userRepository.delete(user);
     }
 
@@ -70,7 +74,11 @@ public class UserService {
     public void resetPassword(UserResetPasswordDTO dto) {
         User user = findByEmail(dto.email());
         if (user == null) {
-            throw new ValidationException("Email doenst exists", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ValidationException("Email doesn't exists", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (user.getUsername().equals("demo")) {
+            throw new ValidationException("Demo account password cannot be reset", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         String newRandomPassword = generateRandomPassword(6);
@@ -93,6 +101,10 @@ public class UserService {
         User existsUser = findByUsername(dto.newUsername());
         if (existsUser != null) {
             throw new ValidationException("Username already exists", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (user.getUsername().equals("demo")) {
+            throw new ValidationException("Demo account username cannot be updated", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         user.setUsername(dto.newUsername());
@@ -118,6 +130,10 @@ public class UserService {
             throw new ValidationException("Password cannot be the same", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
+        if (user.getUsername().equals("demo")) {
+            throw new ValidationException("Demo account password cannot be updated", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
         user.setPassword(bcrypt.encode(dto.newPassword()));
     }
 
@@ -127,6 +143,10 @@ public class UserService {
         User user = findByUsername(jwtTokenProvider.validateToken(token));
         if (user == null) {
             throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (user.getUsername().equals("demo")) {
+            throw new ValidationException("Demo account profile image cannot be updated", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         String profileImage = upload(file);
