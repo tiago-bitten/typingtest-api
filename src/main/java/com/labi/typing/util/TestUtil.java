@@ -22,8 +22,8 @@ public class TestUtil {
             mediumWords = extractWords("src/main/resources/typingtest-words/medium_words.txt");
             longWords = extractWords("src/main/resources/typingtest-words/long_words.txt");
         }
-        catch (FileReadException e) {
-            throw new RuntimeException(e);
+        catch (Exception e) {
+            throw new ExceptionInInitializerError("Error initializing TestUtil");
         }
     }
 
@@ -56,7 +56,8 @@ public class TestUtil {
     private static List<String> extractWords(String path) throws FileReadException {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             return List.of(br.readLine().split(","));
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new FileReadException("Error reading words file: " + path);
         }
     }
