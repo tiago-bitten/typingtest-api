@@ -30,6 +30,14 @@ public class SecurityConfig {
             "/api/home"
     };
 
+    private static final String[] GET_SWAGGER_WHITELIST = {
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/webjars/**"
+    };
+
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
@@ -43,6 +51,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, POST_WHITELIST).permitAll()
+                        .requestMatchers(HttpMethod.GET, GET_SWAGGER_WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.GET, GET_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 )
