@@ -7,29 +7,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id_user")
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tb_user")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_user;
-
-    @Column(nullable = false, unique = true) @Length(min = 3, max = 20)
+public class User extends EntityId {
+    
+    @Column(nullable = false, unique = true, length = 20)
     private String username;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false) @Length(min = 6)
+    @Column(nullable = false, length = 100)
     private String password;
 
     @Column(nullable = false)

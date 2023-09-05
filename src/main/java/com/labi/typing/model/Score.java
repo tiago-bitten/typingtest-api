@@ -10,14 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id_score")
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tb_score")
-public class Score {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_score;
+public class Score extends EntityId {
 
     @Column(nullable = false)
     private Double wordsPerMinute;
@@ -26,13 +22,7 @@ public class Score {
     private Double accuracy;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_test")
+    @JoinColumn(name = "id_test")
     @JsonIgnore
     private Test test;
-
-    public Score(Double wordsPerMinute, Double accuracy, Test test) {
-        this.wordsPerMinute = wordsPerMinute;
-        this.accuracy = accuracy;
-        this.test = test;
-    }
 }

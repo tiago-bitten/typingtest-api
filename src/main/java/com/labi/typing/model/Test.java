@@ -13,14 +13,10 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id_test")
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tb_test")
-public class Test {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_test;
+public class Test extends EntityId {
 
     @Column(nullable = false)
     private LocalDateTime testDate;
@@ -45,7 +41,7 @@ public class Test {
     private TestDifficulty testDifficulty;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_user")
+    @JoinColumn(name = "id_user")
     @JsonBackReference
     private User user;
 

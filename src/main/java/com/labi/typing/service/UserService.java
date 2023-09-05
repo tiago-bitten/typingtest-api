@@ -152,11 +152,6 @@ public class UserService {
     }
 
     private User mapUserRegisterDTOToUser(UserRegisterDTO dto) {
-        return new User(
-                dto.username(),
-                dto.email(),
-                dto.password(),
-                UserRole.USER
-        );
+        return new User(dto.username(), dto.email(), dto.password(), UserRole.USER);
     }
 }

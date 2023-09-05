@@ -27,10 +27,9 @@ public class ScoreService {
     private JwtTokenProvider jwtTokenProvider;
 
     public void registerScore(Test test) {
-        Score score = new Score();
-        score.setAccuracy(calculateAccuracy(test.getTotalLetters(), test.getIncorrectLetters()));
-        score.setWordsPerMinute(calculateWPM(test.getTotalWords(), test.getFinishedTime()));
-        score.setTest(test);
+        double wpm = calculateWPM(test.getTotalWords(), test.getFinishedTime());
+        double acc = calculateAccuracy(test.getTotalLetters(), test.getIncorrectLetters());
+        Score score = new Score(wpm, acc, test);
 
         scoreRepository.save(score);
     }
