@@ -1,7 +1,7 @@
 package com.labi.typing.service;
 
-import com.labi.typing.DTO.user.UserScoreDTO;
-import com.labi.typing.DTO.user.UserScoreTopDTO;
+import com.labi.typing.DTO.score.ScoreUserDTO;
+import com.labi.typing.DTO.score.ScoreTopDTO;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
@@ -34,7 +34,7 @@ public class ScoreService {
         scoreRepository.save(score);
     }
 
-    public List<UserScoreDTO> getUserScores(String authHeader) {
+    public List<ScoreUserDTO> getUserScores(String authHeader) {
         String token = jwtTokenProvider.resolveToken(authHeader);
         User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
         if (user == null) {
@@ -42,25 +42,37 @@ public class ScoreService {
         }
 
         return scoreRepository.findAllUserScores(user.getUsername()).stream()
-                .map(this::mapScoreToUserScoreDTO)
+                .map(this::mapScoreToScoreUserDTO)
                 .toList();
     }
 
-    public List<UserScoreTopDTO> getTopScoresShort() {
+    public List<ScoreUserDTO> getUserTopShort(String authHeader) {
+        String token = jwtTokenProvider.resolveToken(authHeader);
+        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
+        if (user == null) {
+            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return scoreRepository.findAllUserScoreShort(user.getUsername()).stream()
+                .map(this::mapScoreToScoreUserDTO)
+                .toList();
+    }
+
+    public List<ScoreTopDTO> getTopScoresShort() {
         List<Score> scores = scoreRepository.findAllScoreShort();
         return scores.stream()
                 .map(this::mapScoreToScoreTopDTO)
                 .toList();
     }
 
-    public List<UserScoreTopDTO> getTopScoresMedium() {
+    public List<ScoreTopDTO> getTopScoresMedium() {
         List<Score> scores = scoreRepository.findAllScoreMedium();
         return scores.stream()
                 .map(this::mapScoreToScoreTopDTO)
                 .toList();
     }
 
-    public List<UserScoreTopDTO> getTopScoresLong() {
+    public List<ScoreTopDTO> getTopScoresLong() {
         List<Score> scores = scoreRepository.findAllScoreLong();
         return scores.stream()
                 .map(this::mapScoreToScoreTopDTO)
@@ -79,8 +91,8 @@ public class ScoreService {
         return Math.round(acc * 100.0) / 100.0;
     }
 
-    private UserScoreDTO mapScoreToUserScoreDTO(Score score) {
-        return new UserScoreDTO(
+    private ScoreUserDTO mapScoreToScoreUserDTO(Score score) {
+        return new ScoreUserDTO(
                 score.getWordsPerMinute(),
                 score.getAccuracy(),
                 score.getTest().getTestDifficulty(),
@@ -88,8 +100,8 @@ public class ScoreService {
         );
     }
 
-    private UserScoreTopDTO mapScoreToScoreTopDTO(Score score) {
-        return new UserScoreTopDTO(
+    private ScoreTopDTO mapScoreToScoreTopDTO(Score score) {
+        return new ScoreTopDTO(
                 score.getTest().getUser().getUsername(),
                 score.getWordsPerMinute(),
                 score.getAccuracy(),

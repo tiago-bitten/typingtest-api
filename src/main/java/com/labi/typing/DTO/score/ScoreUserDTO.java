@@ -1,8 +1,8 @@
-package com.labi.typing.DTO.user;
+package com.labi.typing.DTO.score;
 
 import com.labi.typing.enums.TestDifficulty;
 
-public record UserScoreDTO(
+public record ScoreUserDTO(
         Double wordsPerMinute,
         Double accuracy,
         TestDifficulty testDifficulty,

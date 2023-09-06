@@ -1,6 +1,6 @@
-package com.labi.typing.DTO.user;
+package com.labi.typing.DTO.score;
 
-public record UserScoreTopDTO(
+public record ScoreTopDTO(
         String username,
         Double wordsPerMinute,
         Double accuracy,

@@ -1,7 +1,7 @@
 package com.labi.typing.controller;
 
-import com.labi.typing.DTO.user.UserScoreDTO;
-import com.labi.typing.DTO.user.UserScoreTopDTO;
+import com.labi.typing.DTO.score.ScoreUserDTO;
+import com.labi.typing.DTO.score.ScoreTopDTO;
 import com.labi.typing.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,26 +18,32 @@ public class ScoreController {
     private ScoreService scoreService;
 
     @GetMapping("/user")
-    public ResponseEntity<List<UserScoreDTO>> getUserScore(@RequestHeader("Authorization") String authHeader) {
-        List<UserScoreDTO> scores = scoreService.getUserScores(authHeader);
+    public ResponseEntity<List<ScoreUserDTO>> getUserScore(@RequestHeader("Authorization") String authHeader) {
+        List<ScoreUserDTO> scores = scoreService.getUserScores(authHeader);
+        return new ResponseEntity<>(scores, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/top/short")
+    public ResponseEntity<List<ScoreUserDTO>> getUserTopShort(@RequestHeader("Authorization") String authHeader) {
+        List<ScoreUserDTO> scores = scoreService.getUserTopShort(authHeader);
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
     @GetMapping("/top/short")
-    public ResponseEntity<List<UserScoreTopDTO>> getTopScoresShort() {
-        List<UserScoreTopDTO> scores = scoreService.getTopScoresShort();
+    public ResponseEntity<List<ScoreTopDTO>> getTopScoresShort() {
+        List<ScoreTopDTO> scores = scoreService.getTopScoresShort();
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
     @GetMapping("/top/medium")
-    public ResponseEntity<List<UserScoreTopDTO>> getTopScoresMedium() {
-        List<UserScoreTopDTO> scores = scoreService.getTopScoresMedium();
+    public ResponseEntity<List<ScoreTopDTO>> getTopScoresMedium() {
+        List<ScoreTopDTO> scores = scoreService.getTopScoresMedium();
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
     @GetMapping("/top/long")
-    public ResponseEntity<List<UserScoreTopDTO>> getTopScoresLong() {
-        List<UserScoreTopDTO> scores = scoreService.getTopScoresLong();
+    public ResponseEntity<List<ScoreTopDTO>> getTopScoresLong() {
+        List<ScoreTopDTO> scores = scoreService.getTopScoresLong();
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 }
