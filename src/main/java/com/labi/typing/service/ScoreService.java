@@ -69,7 +69,9 @@ public class ScoreService {
 
     private Double calculateWPM(Integer words, Integer time) {
         double timeInMinutes = (double) time / 60;
-        return words / timeInMinutes;
+        double wpm = words / timeInMinutes;
+
+        return Math.round(wpm * 100.0) / 100.0;
     }
 
     private Double calculateAccuracy(Integer letters, Integer incorrect) {
