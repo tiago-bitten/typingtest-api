@@ -29,6 +29,12 @@ public class ScoreController {
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
+    @GetMapping("/user/top/medium")
+    public ResponseEntity<List<ScoreUserDTO>> getUserTopMedium(@RequestParam("Authorization") String authHeader) {
+        List<ScoreUserDTO> scores = scoreService.getUserTopMedium(authHeader);
+        return new ResponseEntity<>(scores, HttpStatus.OK);
+    }
+
     @GetMapping("/top/short")
     public ResponseEntity<List<ScoreTopDTO>> getTopScoresShort() {
         List<ScoreTopDTO> scores = scoreService.getTopScoresShort();

@@ -58,6 +58,18 @@ public class ScoreService {
                 .toList();
     }
 
+    public List<ScoreUserDTO> getUserTopMedium(String authHeader) {
+        String token = jwtTokenProvider.resolveToken(authHeader);
+        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
+        if (user == null) {
+            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return scoreRepository.findAllUserScoreMedium(user.getUsername()).stream()
+                .map(this::mapScoreToScoreUserDTO)
+                .toList();
+    }
+
     public List<ScoreTopDTO> getTopScoresShort() {
         List<Score> scores = scoreRepository.findAllScoreShort();
         return scores.stream()
