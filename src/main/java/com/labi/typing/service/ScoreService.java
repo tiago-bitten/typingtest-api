@@ -93,6 +93,7 @@ public class ScoreService {
                 score.getTest().getUser().getUsername(),
                 score.getWordsPerMinute(),
                 score.getAccuracy(),
+                score.getTest().getFinishedTime(),
                 score.getTest().getTestDate().toString()
         );
     }
