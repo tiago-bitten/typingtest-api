@@ -42,7 +42,7 @@ public class ScoreService {
         }
 
         return scoreRepository.findAllUserScores(user.getUsername()).stream()
-                .map(this::mapScoreToScoreDTO)
+                .map(this::mapScoreToUserScoreDTO)
                 .toList();
     }
 
@@ -79,8 +79,13 @@ public class ScoreService {
         return Math.round(acc * 100.0) / 100.0;
     }
 
-    private UserScoreDTO mapScoreToScoreDTO(Score score) {
-        return new UserScoreDTO(score.getWordsPerMinute(), score.getAccuracy());
+    private UserScoreDTO mapScoreToUserScoreDTO(Score score) {
+        return new UserScoreDTO(
+                score.getWordsPerMinute(),
+                score.getAccuracy(),
+                score.getTest().getTestDifficulty(),
+                score.getTest().getFinishedTime()
+        );
     }
 
     private UserScoreTopDTO mapScoreToScoreTopDTO(Score score) {
