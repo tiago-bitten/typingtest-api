@@ -2,6 +2,7 @@ package com.labi.typing.service;
 
 import com.labi.typing.DTO.score.ScoreUserDTO;
 import com.labi.typing.DTO.score.ScoreTopDTO;
+import com.labi.typing.DTO.score.ScoreUserTopDTO;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
@@ -46,7 +47,7 @@ public class ScoreService {
                 .toList();
     }
 
-    public List<ScoreUserDTO> getUserTopShort(String authHeader) {
+    public List<ScoreUserTopDTO> getUserTopShort(String authHeader) {
         String token = jwtTokenProvider.resolveToken(authHeader);
         User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
         if (user == null) {
@@ -54,11 +55,11 @@ public class ScoreService {
         }
 
         return scoreRepository.findAllUserScoreShort(user.getUsername()).stream()
-                .map(this::mapScoreToScoreUserDTO)
+                .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
-    public List<ScoreUserDTO> getUserTopMedium(String authHeader) {
+    public List<ScoreUserTopDTO> getUserTopMedium(String authHeader) {
         String token = jwtTokenProvider.resolveToken(authHeader);
         User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
         if (user == null) {
@@ -66,7 +67,19 @@ public class ScoreService {
         }
 
         return scoreRepository.findAllUserScoreMedium(user.getUsername()).stream()
-                .map(this::mapScoreToScoreUserDTO)
+                .map(this::mapScoreToScoreUserTopDTO)
+                .toList();
+    }
+
+    public List<ScoreUserTopDTO> getUserTopLong(String authHeader) {
+        String token = jwtTokenProvider.resolveToken(authHeader);
+        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
+        if (user == null) {
+            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return scoreRepository.findAllUserScoreLong(user.getUsername()).stream()
+                .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
@@ -115,6 +128,15 @@ public class ScoreService {
     private ScoreTopDTO mapScoreToScoreTopDTO(Score score) {
         return new ScoreTopDTO(
                 score.getTest().getUser().getUsername(),
+                score.getWordsPerMinute(),
+                score.getAccuracy(),
+                score.getTest().getFinishedTime(),
+                score.getTest().getTestDate().toString()
+        );
+    }
+
+    private ScoreUserTopDTO mapScoreToScoreUserTopDTO(Score score) {
+        return new ScoreUserTopDTO(
                 score.getWordsPerMinute(),
                 score.getAccuracy(),
                 score.getTest().getFinishedTime(),

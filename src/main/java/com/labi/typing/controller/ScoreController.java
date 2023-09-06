@@ -2,6 +2,7 @@ package com.labi.typing.controller;
 
 import com.labi.typing.DTO.score.ScoreUserDTO;
 import com.labi.typing.DTO.score.ScoreTopDTO;
+import com.labi.typing.DTO.score.ScoreUserTopDTO;
 import com.labi.typing.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,14 +25,20 @@ public class ScoreController {
     }
 
     @GetMapping("/user/top/short")
-    public ResponseEntity<List<ScoreUserDTO>> getUserTopShort(@RequestHeader("Authorization") String authHeader) {
-        List<ScoreUserDTO> scores = scoreService.getUserTopShort(authHeader);
+    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopShort(@RequestHeader("Authorization") String authHeader) {
+        List<ScoreUserTopDTO> scores = scoreService.getUserTopShort(authHeader);
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
     @GetMapping("/user/top/medium")
-    public ResponseEntity<List<ScoreUserDTO>> getUserTopMedium(@RequestParam("Authorization") String authHeader) {
-        List<ScoreUserDTO> scores = scoreService.getUserTopMedium(authHeader);
+    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopMedium(@RequestParam("Authorization") String authHeader) {
+        List<ScoreUserTopDTO> scores = scoreService.getUserTopMedium(authHeader);
+        return new ResponseEntity<>(scores, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/top/long")
+    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopLong(@RequestParam("Authorization") String authHeader) {
+        List<ScoreUserTopDTO> scores = scoreService.getUserTopLong(authHeader);
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
