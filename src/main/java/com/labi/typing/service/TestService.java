@@ -62,8 +62,7 @@ public class TestService {
                 dto.finishedTime(),
                 dto.totalLetters(),
                 dto.incorrectLetters(),
-                dto.testDifficulty(),
-                null
+                dto.testDifficulty()
         );
     }
 }
