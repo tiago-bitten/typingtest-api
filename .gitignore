@@ -31,3 +31,6 @@ replay_pid*
 *.bak
 *.DS_Store
 profile-img/
+
+# Compiled java files #
+target/
