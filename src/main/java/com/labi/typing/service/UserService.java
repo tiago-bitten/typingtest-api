@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static com.labi.typing.util.HeaderUtil.validateUserByHeader;
 import static com.labi.typing.util.ProfileImageUtil.upload;
 import static com.labi.typing.util.ResetPasswordUtil.generateRandomPassword;
 
@@ -139,12 +140,7 @@ public class UserService {
 
     @Transactional
     public void uploadProfileImage(MultipartFile file, String authHeader) throws IOException {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
+        User user = validateUserByHeader(authHeader);
         if (user.getUsername().equals("demo")) {
             throw new ValidationException("Demo account profile image cannot be updated", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -154,12 +150,7 @@ public class UserService {
     }
 
     public UserProfileDTO getProfile(String authHeader) {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
+        User user = validateUserByHeader(authHeader);
         return new UserProfileDTO(user.getUsername(), user.getEmail(), user.getProfileImgUrl());
     }
 

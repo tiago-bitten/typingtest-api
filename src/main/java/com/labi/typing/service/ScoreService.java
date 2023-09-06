@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.labi.typing.util.HeaderUtil.validateUserByHeader;
+
 @Service
 public class ScoreService {
 
@@ -36,48 +38,28 @@ public class ScoreService {
     }
 
     public List<ScoreUserDTO> getUserScores(String authHeader) {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
+        User user = validateUserByHeader(authHeader);
         return scoreRepository.findAllUserScores(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserDTO)
                 .toList();
     }
 
     public List<ScoreUserTopDTO> getUserTopShort(String authHeader) {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
+        User user = validateUserByHeader(authHeader);
         return scoreRepository.findAllUserScoreShort(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
     public List<ScoreUserTopDTO> getUserTopMedium(String authHeader) {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
+        User user = validateUserByHeader(authHeader);
         return scoreRepository.findAllUserScoreMedium(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
     public List<ScoreUserTopDTO> getUserTopLong(String authHeader) {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
+        User user = validateUserByHeader(authHeader);
         return scoreRepository.findAllUserScoreLong(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();

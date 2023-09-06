@@ -2,15 +2,14 @@ package com.labi.typing.service;
 
 import com.labi.typing.DTO.test.TestGeneratedDTO;
 import com.labi.typing.DTO.test.TestRegisterDTO;
-import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.Test;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.TestRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import static com.labi.typing.util.HeaderUtil.validateUserByHeader;
 import static com.labi.typing.util.TestUtil.generateTest;
 
 @Service
@@ -29,12 +28,7 @@ public class TestService {
     private JwtTokenProvider jwtTokenProvider;
 
     public void saveTest(TestRegisterDTO dto, String authHeader) {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
+        User user = validateUserByHeader(authHeader);
         Test test = mapTestRegisterDTOToTest(dto);
         test.setUser(user);
 
