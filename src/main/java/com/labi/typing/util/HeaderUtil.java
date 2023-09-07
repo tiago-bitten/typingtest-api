@@ -9,13 +9,8 @@ import org.springframework.http.HttpStatus;
 
 public class HeaderUtil {
 
-    @Autowired
-    private static JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private static UserService userService;
-
-    public static User validateUserByHeader(String authHeader) {
+    public static User validateUserByHeader(String authHeader, UserService userService, JwtTokenProvider jwtTokenProvider) {
         String token = jwtTokenProvider.resolveToken(authHeader);
         User user = userService.findByUsername(jwtTokenProvider.validateToken(token));
         if (user == null) {

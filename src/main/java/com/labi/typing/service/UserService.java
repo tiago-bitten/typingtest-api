@@ -50,11 +50,7 @@ public class UserService {
 
     @Transactional
     public void deleteUser(UserDeleteAccountDTO dto, String authHeader) {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
 
         if (!dto.password().equals(dto.confirmPassword())) {
             throw new ValidationException("Passwords don't match", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -89,11 +85,7 @@ public class UserService {
 
     @Transactional
     public void updateUsername(UserUpdateUsernameDTO dto, String authHeader) {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
 
         if (!bcrypt.matches(dto.currentPassword(), user.getPassword())) {
             throw new ValidationException("Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -113,11 +105,7 @@ public class UserService {
 
     @Transactional
     public void updatePassword(UserUpdatePasswordDTO dto, String authHeader) {
-        String token = jwtTokenProvider.resolveToken(authHeader);
-        User user = findByUsername(jwtTokenProvider.validateToken(token));
-        if (user == null) {
-            throw new ValidationException("Username not found", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
 
         if (!bcrypt.matches(dto.currentPassword(), user.getPassword())) {
             throw new ValidationException("Current Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -140,7 +128,7 @@ public class UserService {
 
     @Transactional
     public void uploadProfileImage(MultipartFile file, String authHeader) throws IOException {
-        User user = validateUserByHeader(authHeader);
+        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
         if (user.getUsername().equals("demo")) {
             throw new ValidationException("Demo account profile image cannot be updated", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -150,7 +138,7 @@ public class UserService {
     }
 
     public UserProfileDTO getProfile(String authHeader) {
-        User user = validateUserByHeader(authHeader);
+        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
         return new UserProfileDTO(user.getUsername(), user.getEmail(), user.getProfileImgUrl());
     }
 

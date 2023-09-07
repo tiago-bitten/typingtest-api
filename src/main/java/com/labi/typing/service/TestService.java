@@ -28,7 +28,7 @@ public class TestService {
     private JwtTokenProvider jwtTokenProvider;
 
     public void saveTest(TestRegisterDTO dto, String authHeader) {
-        User user = validateUserByHeader(authHeader);
+        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
         Test test = mapTestRegisterDTOToTest(dto);
         test.setUser(user);
 

@@ -38,28 +38,28 @@ public class ScoreService {
     }
 
     public List<ScoreUserDTO> getUserScores(String authHeader) {
-        User user = validateUserByHeader(authHeader);
+        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
         return scoreRepository.findAllUserScores(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserDTO)
                 .toList();
     }
 
     public List<ScoreUserTopDTO> getUserTopShort(String authHeader) {
-        User user = validateUserByHeader(authHeader);
+        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
         return scoreRepository.findAllUserScoreShort(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
     public List<ScoreUserTopDTO> getUserTopMedium(String authHeader) {
-        User user = validateUserByHeader(authHeader);
+        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
         return scoreRepository.findAllUserScoreMedium(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
     public List<ScoreUserTopDTO> getUserTopLong(String authHeader) {
-        User user = validateUserByHeader(authHeader);
+        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
         return scoreRepository.findAllUserScoreLong(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
