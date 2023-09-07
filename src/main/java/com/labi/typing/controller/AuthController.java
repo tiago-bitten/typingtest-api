@@ -3,6 +3,7 @@ package com.labi.typing.controller;
 import com.labi.typing.DTO.AuthenticationDTO;
 import com.labi.typing.DTO.TokenDTO;
 import com.labi.typing.security.jwt.JwtTokenProvider;
+import com.labi.typing.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,17 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody @Valid AuthenticationDTO authenticationDTO) {
-        var usernamepassword = new UsernamePasswordAuthenticationToken(authenticationDTO.username(), authenticationDTO.password());
-        var auth = authenticationManager.authenticate(usernamepassword);
-        String token = jwtTokenProvider.generateToken(auth.getName());
-
-        return new ResponseEntity<>(new TokenDTO(token), HttpStatus.OK);
+    public ResponseEntity<TokenDTO> login(@RequestBody @Valid AuthenticationDTO dto) {
+        return new ResponseEntity<>(authService.login(dto), HttpStatus.OK);
     }
 }
