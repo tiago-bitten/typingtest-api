@@ -1,5 +1,6 @@
 package com.labi.typing.config;
 
+import com.labi.typing.security.CustomAccessDenied;
 import com.labi.typing.security.CustomAuthenticationEntryPoint;
 import com.labi.typing.security.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class SecurityConfig {
     @Autowired
     private CustomAuthenticationEntryPoint authenticationEntryPoint;
 
+    @Autowired
+    private CustomAccessDenied accessDenied;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -58,6 +62,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDenied)
                 );
 
         return http.build();
