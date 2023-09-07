@@ -15,11 +15,11 @@ This project represents a Java Spring API designed to serve as a platform for ty
 
 ### Random Test Resources
 
-The API incorporates a collection of short words (3 to 4 letters), medium words (5 to 6 letters), and long words (7 to 8 letters) stored in three files located in resources/typingtest-words. These words are utilized to create random tests, guaranteeing a diverse and challenging learning experience.
+The API incorporates a collection of short words (3 to 4 letters), medium words (5 to 6 letters), and long words (7 to 8 letters) stored in three files located in `resources/typingtest-words`. These words are utilized to create random tests, guaranteeing a diverse and challenging learning experience.
 
 ### Security with Spring Security and JWT Auth0
 
-To ensure the security of the API's endpoints, the Spring Security Framework has been implemented. This ensures that only authorized users can access the API's resources. Authentication is carried out through Auth0's JWT (JSON Web Token), providing secure and efficient authentication.
+To ensure the security of the API's endpoints, the Spring Security Framework has been implemented. This ensures that only authorized users can access the API's resources. Authentication is carried out through Auth0's JWT, providing secure and efficient authentication.
 
 ### PostgreSQL Database
 
@@ -68,7 +68,9 @@ Once the application is up and running, you can access the API locally by naviga
 ```sh
 http://localhost:8080/api/home
 ```
-If everything is the API will return this:
+
+If everything is working correctly, the API will return the following response:
+
 ```sh
 {
     "words": [
