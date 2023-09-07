@@ -41,7 +41,7 @@ To run this project on your local machine, follow these steps:
 2. Navigate to the directory where you want to clone the repository.
 3. Run the following command to clone the repository:
 
-```sh
+```git
 git clone https://github.com/tiago-bitten/typingtest-api.git
 ```
 
@@ -71,7 +71,7 @@ http://localhost:8080/api/home
 
 If everything is working correctly, the API will return the following response:
 
-```sh
+```json
 {
     "words": [
         "Hello",
