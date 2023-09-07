@@ -6,10 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.Instant;
@@ -17,7 +16,7 @@ import java.util.Set;
 
 import static com.labi.typing.util.LoggerUtil.log;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalHandlerException {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -57,20 +56,6 @@ public class GlobalHandlerException {
                 errors
         );
         return new ResponseEntity<>(apiError, ex.getStatus());
-    }
-
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ApiError> handleUsernameNotFoundException(UsernameNotFoundException ex, HttpServletRequest request) {
-        log(ex.getClass().getSimpleName() + " was thrown");
-        Set<Message> errors = Set.of(new Message("Username not found"));
-        ApiError apiError = new ApiError(
-                Instant.now(),
-                HttpStatus.UNPROCESSABLE_ENTITY.value(),
-                request.getRequestURI(),
-                errors
-        );
-
-        return new ResponseEntity<>(apiError, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(BadCredentialsException.class)

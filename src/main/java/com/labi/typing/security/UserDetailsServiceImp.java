@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.sound.midi.Soundbank;
+
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
@@ -16,8 +18,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findByUsername(username).
+                orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         return new UserDetailsImp(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), user.getRole());
     }
