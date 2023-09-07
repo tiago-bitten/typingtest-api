@@ -1,5 +1,6 @@
 package com.labi.typing.service;
 
+import com.labi.typing.DTO.score.ScoreUserDTO;
 import com.labi.typing.DTO.test.TestGeneratedDTO;
 import com.labi.typing.DTO.test.TestRegisterDTO;
 import com.labi.typing.model.Test;
@@ -27,13 +28,13 @@ public class TestService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    public void saveTest(TestRegisterDTO dto, String authHeader) {
+    public ScoreUserDTO saveTest(TestRegisterDTO dto, String authHeader) {
         User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
         Test test = mapTestRegisterDTOToTest(dto);
         test.setUser(user);
 
         testRepository.save(test);
-        scoreService.registerScore(test);
+        return scoreService.registerScore(test);
     }
 
     public TestGeneratedDTO getShortTest() {

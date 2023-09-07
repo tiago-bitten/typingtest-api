@@ -1,5 +1,6 @@
 package com.labi.typing.controller;
 
+import com.labi.typing.DTO.score.ScoreUserDTO;
 import com.labi.typing.DTO.test.TestGeneratedDTO;
 import com.labi.typing.DTO.test.TestRegisterDTO;
 import com.labi.typing.service.TestService;
@@ -17,10 +18,9 @@ public class TestController {
     private TestService typingTestService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerTest(@RequestBody @Valid TestRegisterDTO testRegisterDTO,
-                                          @RequestHeader("Authorization") String authHeader) {
-        typingTestService.saveTest(testRegisterDTO, authHeader);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<ScoreUserDTO> registerTest(@RequestBody @Valid TestRegisterDTO testRegisterDTO,
+                                                     @RequestHeader("Authorization") String authHeader) {
+        return new ResponseEntity<>(typingTestService.saveTest(testRegisterDTO, authHeader), HttpStatus.CREATED);
     }
 
     @GetMapping("/short")

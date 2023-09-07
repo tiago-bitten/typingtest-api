@@ -29,12 +29,14 @@ public class ScoreService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    public void registerScore(Test test) {
+    public ScoreUserDTO registerScore(Test test) {
         double wpm = calculateWPM(test.getTotalWords(), test.getFinishedTime());
         double acc = calculateAccuracy(test.getTotalLetters(), test.getIncorrectLetters());
         Score score = new Score(wpm, acc, test);
 
         scoreRepository.save(score);
+
+        return mapScoreToScoreUserDTO(score);
     }
 
     public List<ScoreUserDTO> getUserScores(String authHeader) {
