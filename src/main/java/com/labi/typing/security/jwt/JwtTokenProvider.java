@@ -32,7 +32,7 @@ public class JwtTokenProvider {
                     .sign(algorithm);
         }
         catch (JWTCreationException e) {
-            throw new RuntimeException(e + "Error while creating JWT token");
+            throw new ValidationException("Couldn't create JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
