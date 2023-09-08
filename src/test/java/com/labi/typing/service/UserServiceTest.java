@@ -1,9 +1,6 @@
 package com.labi.typing.service;
 
-import com.labi.typing.DTO.user.UserDeleteAccountDTO;
-import com.labi.typing.DTO.user.UserRegisterDTO;
-import com.labi.typing.DTO.user.UserResetPasswordDTO;
-import com.labi.typing.DTO.user.UserUpdateUsernameDTO;
+import com.labi.typing.DTO.user.*;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
@@ -12,13 +9,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class UserServiceTest {
 
@@ -222,4 +220,23 @@ class UserServiceTest {
                 () -> userService.updateUsername(dto, authHeader));
         assert exception.getMessage().equals("Demo account username cannot be updated");
     }
+
+    @Test
+    void testUpdatePassword_Success() {
+        User user = new User();
+        user.setUsername("username");
+        user.setPassword("encodedPassword");
+
+        UserUpdatePasswordDTO dto = new UserUpdatePasswordDTO("currentPassword",
+                "newPassword", "newPassword");
+        String authHeader = "authHeader";
+
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+        when(encoder.matches(dto.currentPassword(), user.getPassword())).thenReturn(true);
+        assertEquals(dto.newPassword(), dto.confirmNewPassword());
+        when(encoder.matches(dto.newPassword(), user.getPassword())).thenReturn(false);
+
+        userService.updatePassword(dto, authHeader);
+    }
+
 }
