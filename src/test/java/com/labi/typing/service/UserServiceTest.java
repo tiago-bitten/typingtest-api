@@ -1,6 +1,7 @@
 package com.labi.typing.service;
 
 import com.labi.typing.DTO.user.*;
+import com.labi.typing.enums.UserRole;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
@@ -317,5 +318,20 @@ class UserServiceTest {
                 () -> userService.updatePassword(dto, authHeader));
 
         assert exception.getMessage().equals("Demo account password cannot be updated");
+    }
+
+    @Test
+    void testGetProfile_Success() {
+        User user = new User();
+        user.setUsername("username");
+        user.setEmail("email");
+        user.setPassword("encodedPassword");
+        user.setRole(UserRole.USER);
+
+        String authHeader = "authHeader";
+
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+
+        userService.getProfile(authHeader);
     }
 }
