@@ -50,7 +50,6 @@ public class UserService {
     @Transactional
     public void deleteUser(UserDeleteAccountDTO dto, String authHeader) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
-
         if (!dto.password().equals(dto.confirmPassword())) {
             throw new ValidationException("Passwords don't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -85,7 +84,6 @@ public class UserService {
     @Transactional
     public void updateUsername(UserUpdateUsernameDTO dto, String authHeader) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
-
         if (!encoder.matches(dto.currentPassword(), user.getPassword())) {
             throw new ValidationException("Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -105,7 +103,6 @@ public class UserService {
     @Transactional
     public void updatePassword(UserUpdatePasswordDTO dto, String authHeader) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
-
         if (!encoder.matches(dto.currentPassword(), user.getPassword())) {
             throw new ValidationException("Current Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
