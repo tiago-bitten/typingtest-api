@@ -14,7 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AuthServiceTest {
 
@@ -34,28 +35,27 @@ public class AuthServiceTest {
 
     @Test
     public void testLogin_Success() {
-        AuthenticationDTO authenticationDTO = new AuthenticationDTO("username", "password");
+        AuthenticationDTO dto = new AuthenticationDTO("username", "password");
         UsernamePasswordAuthenticationToken usernamePassword =
-                new UsernamePasswordAuthenticationToken(authenticationDTO.username(), authenticationDTO.password());
+                new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         Authentication authentication = mock(Authentication.class);
         when(authenticationManager.authenticate(usernamePassword)).thenReturn(authentication);
-        when(jwtTokenProvider.generateToken(authenticationDTO.username())).thenReturn("Bearer generatedToken");
+        when(jwtTokenProvider.generateToken(dto.username())).thenReturn("generatedToken");
 
-        TokenDTO tokenDTO = authService.login(authenticationDTO);
+        TokenDTO tokenDTO = authService.login(dto);
 
         assertNotNull(tokenDTO);
-        assertTrue(tokenDTO.token().startsWith("Bearer "));
+        assertEquals("generatedToken", tokenDTO.token());
     }
 
     @Test
     public void testLogin_Failure() {
-        AuthenticationDTO authenticationDTO = new AuthenticationDTO("username", "password");
+        AuthenticationDTO dto = new AuthenticationDTO("username", "password");
         UsernamePasswordAuthenticationToken usernamePassword =
-                new UsernamePasswordAuthenticationToken(authenticationDTO.username(), authenticationDTO.password());
+                new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         when(authenticationManager.authenticate(usernamePassword)).thenThrow(new BadCredentialsException("Username or password is incorrect"));
 
-        BadCredentialsException exception = assertThrows(BadCredentialsException.class, () -> authService.login(authenticationDTO));
+        BadCredentialsException exception = assertThrows(BadCredentialsException.class, () -> authService.login(dto));
         assertEquals("Username or password is incorrect", exception.getMessage());
     }
-
 }
