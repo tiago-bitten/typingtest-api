@@ -59,15 +59,4 @@ public class Test extends EntityId {
         this.testDifficulty = testDifficulty;
         this.user = user;
     }
-
-    public Test(LocalDateTime testDate, String testText, Integer totalWords, Integer finishedTime,
-                Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty) {
-        this.testDate = testDate;
-        this.testText = testText;
-        this.totalWords = totalWords;
-        this.finishedTime = finishedTime;
-        this.totalLetters = totalLetters;
-        this.incorrectLetters = incorrectLetters;
-        this.testDifficulty = testDifficulty;
-    }
 }

@@ -30,8 +30,7 @@ public class TestService {
 
     public ScoreUserDTO registerTest(TestRegisterDTO dto, String authHeader) {
         User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
-        Test test = mapTestRegisterDTOToTest(dto);
-        test.setUser(user);
+        Test test = mapTestRegisterDTOToTest(dto, user);
 
         testRepository.save(test);
         return scoreService.registerScore(test);
@@ -49,7 +48,7 @@ public class TestService {
         return new TestGeneratedDTO(generateTest(4, 9, 7));
     }
 
-    private Test mapTestRegisterDTOToTest(TestRegisterDTO dto) {
+    private Test mapTestRegisterDTOToTest(TestRegisterDTO dto, User user) {
         return new Test(
                 dto.testDate(),
                 dto.testText(),
@@ -57,7 +56,8 @@ public class TestService {
                 dto.finishedTime(),
                 dto.totalLetters(),
                 dto.incorrectLetters(),
-                dto.testDifficulty()
+                dto.testDifficulty(),
+                user
         );
     }
 }

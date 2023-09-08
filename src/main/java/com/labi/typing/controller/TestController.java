@@ -18,9 +18,9 @@ public class TestController {
     private TestService typingTestService;
 
     @PostMapping("/register")
-    public ResponseEntity<ScoreUserDTO> registerTest(@RequestBody @Valid TestRegisterDTO testRegisterDTO,
+    public ResponseEntity<ScoreUserDTO> registerTest(@RequestBody @Valid TestRegisterDTO dto,
                                                      @RequestHeader("Authorization") String authHeader) {
-        return new ResponseEntity<>(typingTestService.registerTest(testRegisterDTO, authHeader), HttpStatus.CREATED);
+        return new ResponseEntity<>(typingTestService.registerTest(dto, authHeader), HttpStatus.CREATED);
     }
 
     @GetMapping("/short")
