@@ -120,4 +120,13 @@ class UserServiceTest {
 
         userService.resetPassword(dto);
     }
+
+    @Test
+    void testResetPassword_Failure_EmailDoesntExists() {
+        UserResetPasswordDTO dto = new UserResetPasswordDTO("email");
+        when(userRepository.findByEmail(dto.email())).thenReturn(Optional.empty());
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> userService.resetPassword(dto));
+        assert exception.getMessage().equals("Email doesn't exists");
+    }
 }
