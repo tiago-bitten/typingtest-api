@@ -94,4 +94,18 @@ class UserServiceTest {
         ValidationException exception = assertThrows(ValidationException.class, () -> userService.deleteUser(dto, authHeader));
         assert exception.getMessage().equals("Passwords don't match");
     }
+
+    @Test
+    void testDeleteUser_Failure_DemoAccountCannotBeDeleted() {
+        User user = new User();
+        user.setUsername("demo");
+        user.setPassword("encodedPassword");
+        UserDeleteAccountDTO dto = new UserDeleteAccountDTO("password", "password");
+        String authHeader = "authHeader";
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+        when(encoder.matches(dto.password(), user.getPassword())).thenReturn(true);
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> userService.deleteUser(dto, authHeader));
+        assert exception.getMessage().equals("Demo account cannot be deleted");
+    }
 }
