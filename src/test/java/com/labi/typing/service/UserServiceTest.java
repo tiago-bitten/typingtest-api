@@ -80,4 +80,18 @@ class UserServiceTest {
 
         userService.deleteUser(dto, authHeader);
     }
+
+    @Test
+    void testDeleteUser_Failure_PasswordsDontMatch() {
+        User user = new User();
+        user.setUsername("username");
+        user.setPassword("encodedPassword");
+        UserDeleteAccountDTO dto = new UserDeleteAccountDTO("password", "password2");
+        String authHeader = "authHeader";
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+        when(encoder.matches(dto.password(), user.getPassword())).thenReturn(false);
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> userService.deleteUser(dto, authHeader));
+        assert exception.getMessage().equals("Passwords don't match");
+    }
 }
