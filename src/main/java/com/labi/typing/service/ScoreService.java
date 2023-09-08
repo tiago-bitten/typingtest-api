@@ -3,14 +3,12 @@ package com.labi.typing.service;
 import com.labi.typing.DTO.score.ScoreUserDTO;
 import com.labi.typing.DTO.score.ScoreTopDTO;
 import com.labi.typing.DTO.score.ScoreUserTopDTO;
-import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.ScoreRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,50 +37,50 @@ public class ScoreService {
         return mapScoreToScoreUserDTO(score);
     }
 
-    public List<ScoreUserDTO> getUserScores(String authHeader) {
+    public List<ScoreUserDTO> getUserAllScore(String authHeader) {
         User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
-        return scoreRepository.findAllUserScores(user.getUsername()).stream()
+        return scoreRepository.findUserAllScore(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserDTO)
                 .toList();
     }
 
-    public List<ScoreUserTopDTO> getUserTopShort(String authHeader) {
+    public List<ScoreUserTopDTO> getUserTopShortScore(String authHeader) {
         User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
-        return scoreRepository.findAllUserScoreShort(user.getUsername()).stream()
+        return scoreRepository.findUserTopShortScore(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
-    public List<ScoreUserTopDTO> getUserTopMedium(String authHeader) {
+    public List<ScoreUserTopDTO> getUserTopMediumScore(String authHeader) {
         User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
-        return scoreRepository.findAllUserScoreMedium(user.getUsername()).stream()
+        return scoreRepository.findUserTopMediumScore(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
-    public List<ScoreUserTopDTO> getUserTopLong(String authHeader) {
+    public List<ScoreUserTopDTO> getUserTopLongScore(String authHeader) {
         User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
-        return scoreRepository.findAllUserScoreLong(user.getUsername()).stream()
+        return scoreRepository.findUserTopLongScore(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
-    public List<ScoreTopDTO> getTopScoresShort() {
-        List<Score> scores = scoreRepository.findAllScoreShort();
+    public List<ScoreTopDTO> getTopShortScore() {
+        List<Score> scores = scoreRepository.findTopShortScore();
         return scores.stream()
                 .map(this::mapScoreToScoreTopDTO)
                 .toList();
     }
 
-    public List<ScoreTopDTO> getTopScoresMedium() {
-        List<Score> scores = scoreRepository.findAllScoreMedium();
+    public List<ScoreTopDTO> getTopMediumScore() {
+        List<Score> scores = scoreRepository.findTopMediumScore();
         return scores.stream()
                 .map(this::mapScoreToScoreTopDTO)
                 .toList();
     }
 
-    public List<ScoreTopDTO> getTopScoresLong() {
-        List<Score> scores = scoreRepository.findAllScoreLong();
+    public List<ScoreTopDTO> getTopLongScore() {
+        List<Score> scores = scoreRepository.findTopLongScore();
         return scores.stream()
                 .map(this::mapScoreToScoreTopDTO)
                 .toList();
@@ -105,7 +103,8 @@ public class ScoreService {
                 score.getWordsPerMinute(),
                 score.getAccuracy(),
                 score.getTest().getTestDifficulty(),
-                score.getTest().getFinishedTime()
+                score.getTest().getFinishedTime(),
+                score.getTest().getTestDate()
         );
     }
 
@@ -115,7 +114,7 @@ public class ScoreService {
                 score.getWordsPerMinute(),
                 score.getAccuracy(),
                 score.getTest().getFinishedTime(),
-                score.getTest().getTestDate().toString()
+                score.getTest().getTestDate()
         );
     }
 
@@ -124,7 +123,7 @@ public class ScoreService {
                 score.getWordsPerMinute(),
                 score.getAccuracy(),
                 score.getTest().getFinishedTime(),
-                score.getTest().getTestDate().toString()
+                score.getTest().getTestDate()
         );
     }
 }

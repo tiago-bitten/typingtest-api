@@ -29,12 +29,12 @@ public class UserService {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private PasswordEncoder bcrypt;
+    private PasswordEncoder encoder;
 
     @Autowired
     private EmailService emailService;
 
-    public void saveUser(UserRegisterDTO dto) {
+    public void registerUser(UserRegisterDTO dto) {
         if (findByUsername(dto.username()) != null) {
             throw new ValidationException("Username already exists", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -44,7 +44,7 @@ public class UserService {
         }
 
         User user = mapUserRegisterDTOToUser(dto);
-        user.setPassword(bcrypt.encode(user.getPassword()));
+        user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -56,7 +56,7 @@ public class UserService {
             throw new ValidationException("Passwords don't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        if (!bcrypt.matches(dto.password(), user.getPassword())) {
+        if (!encoder.matches(dto.password(), user.getPassword())) {
             throw new ValidationException("Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -80,14 +80,14 @@ public class UserService {
 
         String newRandomPassword = generateRandomPassword(6);
         emailService.emailResetPassword(user.getEmail(), newRandomPassword);
-        user.setPassword(bcrypt.encode(newRandomPassword));
+        user.setPassword(encoder.encode(newRandomPassword));
     }
 
     @Transactional
     public void updateUsername(UserUpdateUsernameDTO dto, String authHeader) {
         User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
 
-        if (!bcrypt.matches(dto.currentPassword(), user.getPassword())) {
+        if (!encoder.matches(dto.currentPassword(), user.getPassword())) {
             throw new ValidationException("Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -107,7 +107,7 @@ public class UserService {
     public void updatePassword(UserUpdatePasswordDTO dto, String authHeader) {
         User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
 
-        if (!bcrypt.matches(dto.currentPassword(), user.getPassword())) {
+        if (!encoder.matches(dto.currentPassword(), user.getPassword())) {
             throw new ValidationException("Current Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -115,7 +115,7 @@ public class UserService {
             throw new ValidationException("Passwords don't match", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        if (bcrypt.matches(dto.newPassword(), user.getPassword())) {
+        if (encoder.matches(dto.newPassword(), user.getPassword())) {
             throw new ValidationException("Password cannot be the same", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -123,7 +123,7 @@ public class UserService {
             throw new ValidationException("Demo account password cannot be updated", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        user.setPassword(bcrypt.encode(dto.newPassword()));
+        user.setPassword(encoder.encode(dto.newPassword()));
     }
 
     @Transactional

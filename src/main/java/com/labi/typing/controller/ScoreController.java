@@ -19,44 +19,37 @@ public class ScoreController {
     private ScoreService scoreService;
 
     @GetMapping("/user")
-    public ResponseEntity<List<ScoreUserDTO>> getUserScore(@RequestHeader("Authorization") String authHeader) {
-        List<ScoreUserDTO> scores = scoreService.getUserScores(authHeader);
-        return new ResponseEntity<>(scores, HttpStatus.OK);
+    public ResponseEntity<List<ScoreUserDTO>> getUserAllScore(@RequestHeader("Authorization") String authHeader) {
+        return new ResponseEntity<>(scoreService.getUserAllScore(authHeader), HttpStatus.OK);
     }
 
     @GetMapping("/user/top/short")
-    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopShort(@RequestHeader("Authorization") String authHeader) {
-        List<ScoreUserTopDTO> scores = scoreService.getUserTopShort(authHeader);
-        return new ResponseEntity<>(scores, HttpStatus.OK);
+    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopShortScore(@RequestHeader("Authorization") String authHeader) {
+        return new ResponseEntity<>(scoreService.getUserTopShortScore(authHeader), HttpStatus.OK);
     }
 
     @GetMapping("/user/top/medium")
-    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopMedium(@RequestParam("Authorization") String authHeader) {
-        List<ScoreUserTopDTO> scores = scoreService.getUserTopMedium(authHeader);
-        return new ResponseEntity<>(scores, HttpStatus.OK);
+    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopMediumScore(@RequestParam("Authorization") String authHeader) {
+        return new ResponseEntity<>(scoreService.getUserTopMediumScore(authHeader), HttpStatus.OK);
     }
 
     @GetMapping("/user/top/long")
-    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopLong(@RequestParam("Authorization") String authHeader) {
-        List<ScoreUserTopDTO> scores = scoreService.getUserTopLong(authHeader);
-        return new ResponseEntity<>(scores, HttpStatus.OK);
+    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopLongScore(@RequestParam("Authorization") String authHeader) {
+        return new ResponseEntity<>(scoreService.getUserTopLongScore(authHeader), HttpStatus.OK);
     }
 
     @GetMapping("/top/short")
-    public ResponseEntity<List<ScoreTopDTO>> getTopScoresShort() {
-        List<ScoreTopDTO> scores = scoreService.getTopScoresShort();
-        return new ResponseEntity<>(scores, HttpStatus.OK);
+    public ResponseEntity<List<ScoreTopDTO>> getTopShortScore() {
+        return new ResponseEntity<>(scoreService.getTopShortScore(), HttpStatus.OK);
     }
 
     @GetMapping("/top/medium")
-    public ResponseEntity<List<ScoreTopDTO>> getTopScoresMedium() {
-        List<ScoreTopDTO> scores = scoreService.getTopScoresMedium();
-        return new ResponseEntity<>(scores, HttpStatus.OK);
+    public ResponseEntity<List<ScoreTopDTO>> getTopMediumScore() {
+        return new ResponseEntity<>(scoreService.getTopMediumScore(), HttpStatus.OK);
     }
 
     @GetMapping("/top/long")
-    public ResponseEntity<List<ScoreTopDTO>> getTopScoresLong() {
-        List<ScoreTopDTO> scores = scoreService.getTopScoresLong();
-        return new ResponseEntity<>(scores, HttpStatus.OK);
+    public ResponseEntity<List<ScoreTopDTO>> getTopLongScore() {
+        return new ResponseEntity<>(scoreService.getTopLongScore(), HttpStatus.OK);
     }
 }
