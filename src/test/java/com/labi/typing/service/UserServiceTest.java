@@ -297,4 +297,25 @@ class UserServiceTest {
 
         assert exception.getMessage().equals("Password cannot be the same");
     }
+
+    @Test
+    void testUpdatePassword_Failure_DemoAccountPasswordCannotBeUpdated() {
+        User user = new User();
+        user.setUsername("demo");
+        user.setPassword("encodedPassword");
+
+        UserUpdatePasswordDTO dto = new UserUpdatePasswordDTO("currentPassword",
+                "newPassword", "newPassword");
+        String authHeader = "authHeader";
+
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+        when(encoder.matches(dto.currentPassword(), user.getPassword())).thenReturn(true);
+        assertEquals(dto.newPassword(), dto.confirmNewPassword());
+        when(encoder.matches(dto.newPassword(), user.getPassword())).thenReturn(false);
+
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> userService.updatePassword(dto, authHeader));
+
+        assert exception.getMessage().equals("Demo account password cannot be updated");
+    }
 }
