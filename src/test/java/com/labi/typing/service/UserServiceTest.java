@@ -58,4 +58,12 @@ class UserServiceTest {
         assert exception.getMessage().equals("Username already exists");
     }
 
+    @Test
+    void testRegisterUser_Failure_EmailAlreadyExists() {
+        UserRegisterDTO dto = new UserRegisterDTO("username", "email", "password");
+        when(userRepository.findByEmail(dto.email())).thenReturn(Optional.of(new User()));
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> userService.registerUser(dto));
+        assert exception.getMessage().equals("Email already exists");
+    }
 }
