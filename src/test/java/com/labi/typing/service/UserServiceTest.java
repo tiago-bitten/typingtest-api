@@ -3,6 +3,7 @@ package com.labi.typing.service;
 import com.labi.typing.DTO.user.UserDeleteAccountDTO;
 import com.labi.typing.DTO.user.UserRegisterDTO;
 import com.labi.typing.DTO.user.UserResetPasswordDTO;
+import com.labi.typing.DTO.user.UserUpdateUsernameDTO;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
@@ -44,6 +45,7 @@ class UserServiceTest {
     @Test
     void testRegisterUser_Success() {
         UserRegisterDTO dto = new UserRegisterDTO("username", "email", "password");
+
         when(userRepository.findByUsername(dto.username())).thenReturn(Optional.empty());
         when(userRepository.findByEmail(dto.email())).thenReturn(Optional.empty());
         when(encoder.encode(dto.password())).thenReturn("encodedPassword");
@@ -74,8 +76,10 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("username");
         user.setPassword("encodedPassword");
+
         UserDeleteAccountDTO dto = new UserDeleteAccountDTO("password", "password");
         String authHeader = "authHeader";
+
         when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
         when(encoder.matches(dto.password(), user.getPassword())).thenReturn(true);
 
@@ -87,8 +91,10 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("username");
         user.setPassword("encodedPassword");
+
         UserDeleteAccountDTO dto = new UserDeleteAccountDTO("password", "password2");
         String authHeader = "authHeader";
+
         when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
         when(encoder.matches(dto.password(), user.getPassword())).thenReturn(false);
 
@@ -101,8 +107,10 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("demo");
         user.setPassword("encodedPassword");
+
         UserDeleteAccountDTO dto = new UserDeleteAccountDTO("password", "password");
         String authHeader = "authHeader";
+
         when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
         when(encoder.matches(dto.password(), user.getPassword())).thenReturn(true);
 
@@ -115,6 +123,7 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("username");
         user.setEmail("email");
+
         UserResetPasswordDTO dto = new UserResetPasswordDTO("email");
         when(userRepository.findByEmail(dto.email())).thenReturn(Optional.of(user));
 
@@ -135,6 +144,7 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("demo");
         user.setEmail("email");
+
         UserResetPasswordDTO dto = new UserResetPasswordDTO("email");
         when(userRepository.findByEmail(dto.email())).thenReturn(Optional.of(user));
 
@@ -147,11 +157,30 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("username");
         user.setPassword("encodedPassword");
-        UserDeleteAccountDTO dto = new UserDeleteAccountDTO("password", "password");
+        UserUpdateUsernameDTO dto = new UserUpdateUsernameDTO("password", "newUsername");
         String authHeader = "authHeader";
         when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
-        when(encoder.matches(dto.password(), user.getPassword())).thenReturn(true);
+        when(encoder.matches(dto.currentPassword(), user.getPassword())).thenReturn(true);
 
-        userService.deleteUser(dto, authHeader);
+        userService.updateUsername(dto, authHeader);
+    }
+
+    @Test
+    void testUpdateUsername_Failure_UsernameAlreadyExists() {
+        User user = new User();
+        user.setUsername("oldUsername");
+        user.setPassword("encodedPassword");
+
+        User existsUser = new User();
+        existsUser.setUsername("newUsername");
+
+        UserUpdateUsernameDTO dto = new UserUpdateUsernameDTO("password", "newUsername");
+        String authHeader = "authHeader";
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+        when(encoder.matches(dto.currentPassword(), user.getPassword())).thenReturn(true);
+        when(userRepository.findByUsername(dto.newUsername())).thenReturn(Optional.of(existsUser));
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> userService.updateUsername(dto, authHeader));
+        assert exception.getMessage().equals("Username already exists");
     }
 }
