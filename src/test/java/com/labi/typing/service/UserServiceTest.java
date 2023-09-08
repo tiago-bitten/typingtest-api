@@ -2,6 +2,7 @@ package com.labi.typing.service;
 
 import com.labi.typing.DTO.user.UserDeleteAccountDTO;
 import com.labi.typing.DTO.user.UserRegisterDTO;
+import com.labi.typing.DTO.user.UserResetPasswordDTO;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
@@ -107,5 +108,16 @@ class UserServiceTest {
 
         ValidationException exception = assertThrows(ValidationException.class, () -> userService.deleteUser(dto, authHeader));
         assert exception.getMessage().equals("Demo account cannot be deleted");
+    }
+
+    @Test
+    void testResetPassword_Success() {
+        User user = new User();
+        user.setUsername("username");
+        user.setEmail("email");
+        UserResetPasswordDTO dto = new UserResetPasswordDTO("email");
+        when(userRepository.findByEmail(dto.email())).thenReturn(Optional.of(user));
+
+        userService.resetPassword(dto);
     }
 }
