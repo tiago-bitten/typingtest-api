@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import static com.labi.typing.util.HeaderUtil.validateUserByHeader;
 import static com.labi.typing.util.ProfileImageUtil.upload;
 import static com.labi.typing.util.ResetPasswordUtil.generateRandomPassword;
 
@@ -50,7 +49,7 @@ public class UserService {
 
     @Transactional
     public void deleteUser(UserDeleteAccountDTO dto, String authHeader) {
-        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, this);
 
         if (!dto.password().equals(dto.confirmPassword())) {
             throw new ValidationException("Passwords don't match", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -85,7 +84,7 @@ public class UserService {
 
     @Transactional
     public void updateUsername(UserUpdateUsernameDTO dto, String authHeader) {
-        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, this);
 
         if (!encoder.matches(dto.currentPassword(), user.getPassword())) {
             throw new ValidationException("Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -105,7 +104,7 @@ public class UserService {
 
     @Transactional
     public void updatePassword(UserUpdatePasswordDTO dto, String authHeader) {
-        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, this);
 
         if (!encoder.matches(dto.currentPassword(), user.getPassword())) {
             throw new ValidationException("Current Password doesn't match", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -128,7 +127,7 @@ public class UserService {
 
     @Transactional
     public void uploadProfileImage(MultipartFile file, String authHeader) throws IOException {
-        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, this);
         if (user.getUsername().equals("demo")) {
             throw new ValidationException("Demo account profile image cannot be updated", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -138,7 +137,7 @@ public class UserService {
     }
 
     public UserProfileDTO getProfile(String authHeader) {
-        User user = validateUserByHeader(authHeader, this, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, this);
         return new UserProfileDTO(user.getUsername(), user.getEmail(), user.getProfileImgUrl());
     }
 

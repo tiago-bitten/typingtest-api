@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.labi.typing.util.HeaderUtil.validateUserByHeader;
-
 @Service
 public class ScoreService {
 
@@ -38,28 +36,28 @@ public class ScoreService {
     }
 
     public List<ScoreUserDTO> getUserAllScore(String authHeader) {
-        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
         return scoreRepository.findUserAllScore(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserDTO)
                 .toList();
     }
 
     public List<ScoreUserTopDTO> getUserTopShortScore(String authHeader) {
-        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
         return scoreRepository.findUserTopShortScore(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
     public List<ScoreUserTopDTO> getUserTopMediumScore(String authHeader) {
-        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
         return scoreRepository.findUserTopMediumScore(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();
     }
 
     public List<ScoreUserTopDTO> getUserTopLongScore(String authHeader) {
-        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
         return scoreRepository.findUserTopLongScore(user.getUsername()).stream()
                 .map(this::mapScoreToScoreUserTopDTO)
                 .toList();

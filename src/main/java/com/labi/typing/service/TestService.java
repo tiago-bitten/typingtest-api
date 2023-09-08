@@ -10,7 +10,6 @@ import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.labi.typing.util.HeaderUtil.validateUserByHeader;
 import static com.labi.typing.util.TestUtil.generateTest;
 
 @Service
@@ -29,7 +28,7 @@ public class TestService {
     private JwtTokenProvider jwtTokenProvider;
 
     public ScoreUserDTO registerTest(TestRegisterDTO dto, String authHeader) {
-        User user = validateUserByHeader(authHeader, userService, jwtTokenProvider);
+        User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
         Test test = mapTestRegisterDTOToTest(dto, user);
 
         testRepository.save(test);

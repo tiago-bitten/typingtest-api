@@ -1,10 +1,6 @@
 package com.labi.typing.security.jwt;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.security.UserDetailsServiceImp;
-import com.labi.typing.util.LoggerUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,17 +33,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         try {
             String token = jwtTokenProvider.resolveToken(request.getHeader("Authorization"));
 
-            if (token != null) {
-                String username = jwtTokenProvider.validateToken(token);
-                UserDetails userDetails =  userDetailsService.loadUserByUsername(username);
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                UserDetails userDetails =  userDetailsService.loadUserByUsername(jwtTokenProvider.getUsernameFromToken(token));
 
-                var authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-                        userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
             filterChain.doFilter(request, response);
         }
-        catch (UsernameNotFoundException | JWTVerificationException e) {
+        catch (UsernameNotFoundException e) {
             log(e.getClass().getSimpleName() + " was thrown - Message: " + e.getMessage());
             response.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
         }
