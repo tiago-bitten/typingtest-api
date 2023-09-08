@@ -7,6 +7,7 @@
 ![Maven](https://img.shields.io/badge/Maven-red?style=flat-square)
 ![Railway](https://img.shields.io/badge/Railway-purple?style=flat-square)
 ![Swagger](https://img.shields.io/badge/Swagger-brightgreen?style=flat-square)
+![JUnit](https://img.shields.io/badge/JUnit-red?style=flat-square)
 
 
 # About the Project
@@ -24,6 +25,10 @@ To ensure the security of the API's endpoints, the Spring Security Framework has
 ### PostgreSQL Database
 
 For the purpose of storing essential data and user information, the PostgreSQL database is employed. This allows the maintenance of an organized record of test scores and other pertinent information.
+
+### Unit Testing with JUnit
+
+To ensure the reliability and correctness of the TypingTest API's `service` layer, unit tests have been implemented using JUnit. These tests validate the behavior of the `service` methods, covering various scenarios including success and failure cases.
 
 ### Hosted on Railway
 
