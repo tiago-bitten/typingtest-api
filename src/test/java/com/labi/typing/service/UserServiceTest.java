@@ -1,5 +1,6 @@
 package com.labi.typing.service;
 
+import com.labi.typing.DTO.user.UserDeleteAccountDTO;
 import com.labi.typing.DTO.user.UserRegisterDTO;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
@@ -65,5 +66,18 @@ class UserServiceTest {
 
         ValidationException exception = assertThrows(ValidationException.class, () -> userService.registerUser(dto));
         assert exception.getMessage().equals("Email already exists");
+    }
+
+    @Test
+    void testDeleteUser_Success() {
+        User user = new User();
+        user.setUsername("username");
+        user.setPassword("encodedPassword");
+        UserDeleteAccountDTO dto = new UserDeleteAccountDTO("password", "password");
+        String authHeader = "authHeader";
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+        when(encoder.matches(dto.password(), user.getPassword())).thenReturn(true);
+
+        userService.deleteUser(dto, authHeader);
     }
 }
