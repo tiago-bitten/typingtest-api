@@ -129,4 +129,16 @@ class UserServiceTest {
         ValidationException exception = assertThrows(ValidationException.class, () -> userService.resetPassword(dto));
         assert exception.getMessage().equals("Email doesn't exists");
     }
+
+    @Test
+    void testResetPassword_Failure_DemoAccountPasswordCannotBeReset() {
+        User user = new User();
+        user.setUsername("demo");
+        user.setEmail("email");
+        UserResetPasswordDTO dto = new UserResetPasswordDTO("email");
+        when(userRepository.findByEmail(dto.email())).thenReturn(Optional.of(user));
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> userService.resetPassword(dto));
+        assert exception.getMessage().equals("Demo account password cannot be reset");
+    }
 }
