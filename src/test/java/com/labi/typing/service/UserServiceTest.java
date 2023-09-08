@@ -256,4 +256,24 @@ class UserServiceTest {
                 () -> userService.updatePassword(dto, authHeader));
         assert exception.getMessage().equals("Current Password doesn't match");
     }
+
+    @Test
+    void testUpdatePassword_Failure_PasswordsDontMatch() {
+        User user = new User();
+        user.setUsername("username");
+        user.setPassword("encodedPassword");
+
+        UserUpdatePasswordDTO dto = new UserUpdatePasswordDTO("currentPassword",
+                "newPassword", "newPasswordButDifferent");
+        String authHeader = "authHeader";
+
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+        when(encoder.matches(dto.currentPassword(), user.getPassword())).thenReturn(true);
+        assertNotEquals(dto.newPassword(), dto.confirmNewPassword());
+
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> userService.updatePassword(dto, authHeader));
+
+        assert exception.getMessage().equals("Passwords don't match");
+    }
 }
