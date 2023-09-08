@@ -174,7 +174,7 @@ class UserServiceTest {
         User existsUser = new User();
         existsUser.setUsername("newUsername");
 
-        UserUpdateUsernameDTO dto = new UserUpdateUsernameDTO("password", "newUsername");
+        UserUpdateUsernameDTO dto = new UserUpdateUsernameDTO("currentPassword", "newUsername");
         String authHeader = "authHeader";
         when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
         when(encoder.matches(dto.currentPassword(), user.getPassword())).thenReturn(true);
@@ -182,5 +182,21 @@ class UserServiceTest {
 
         ValidationException exception = assertThrows(ValidationException.class, () -> userService.updateUsername(dto, authHeader));
         assert exception.getMessage().equals("Username already exists");
+    }
+
+    @Test
+    void testUpdateUsername_Failure_PasswordDoesntMatch() {
+        User user = new User();
+        user.setUsername("username");
+        user.setPassword("encodedPassword");
+
+        UserUpdateUsernameDTO dto = new UserUpdateUsernameDTO("currentPassword", "newUsername");
+        String authHeader = "authHeader";
+
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+        when(encoder.matches(dto.currentPassword(), user.getPassword())).thenReturn(false);
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> userService.updateUsername(dto, authHeader));
+        assert exception.getMessage().equals("Password doesn't match");
     }
 }
