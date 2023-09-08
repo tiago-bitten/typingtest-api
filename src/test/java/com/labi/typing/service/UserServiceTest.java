@@ -1,6 +1,8 @@
 package com.labi.typing.service;
 
 import com.labi.typing.DTO.user.UserRegisterDTO;
+import com.labi.typing.exception.custom.ValidationException;
+import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 class UserServiceTest {
@@ -45,4 +48,14 @@ class UserServiceTest {
 
         userService.registerUser(dto);
     }
+
+    @Test
+    void testRegisterUser_Failure_UsernameAlreadyExists() {
+        UserRegisterDTO dto = new UserRegisterDTO("username", "email", "password");
+        when(userRepository.findByUsername(dto.username())).thenReturn(Optional.of(new User()));
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> userService.registerUser(dto));
+        assert exception.getMessage().equals("Username already exists");
+    }
+
 }
