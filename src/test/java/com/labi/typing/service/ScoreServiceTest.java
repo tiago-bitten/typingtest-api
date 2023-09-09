@@ -71,4 +71,14 @@ class ScoreServiceTest {
 
         scoreService.getUserTopMediumScore(authHeader);
     }
+
+    @Test
+    void testGetUserTopLongScore_Success() {
+        User user = new User("username", "email", "password", UserRole.USER);
+        String authHeader = "authHeader";
+
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+
+        scoreService.getUserTopLongScore(authHeader);
+    }
 }
