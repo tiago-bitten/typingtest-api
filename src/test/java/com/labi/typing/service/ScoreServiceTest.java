@@ -81,4 +81,9 @@ class ScoreServiceTest {
 
         scoreService.getUserTopLongScore(authHeader);
     }
+
+    @Test
+    void testGetTopShortScore_Success() {
+        scoreService.getTopShortScore();
+    }
 }
