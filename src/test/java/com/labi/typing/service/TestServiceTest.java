@@ -74,4 +74,9 @@ class TestServiceTest {
     void testGetMediumTest_Success() {
         testService.getMediumTest();
     }
+
+    @Test
+    void testGetLongTest_Success() {
+        testService.getLongTest();
+    }
 }
