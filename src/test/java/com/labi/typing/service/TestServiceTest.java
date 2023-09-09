@@ -3,6 +3,7 @@ package com.labi.typing.service;
 import com.labi.typing.DTO.test.TestRegisterDTO;
 import com.labi.typing.enums.TestDifficulty;
 import com.labi.typing.enums.UserRole;
+import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.TestRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
@@ -11,8 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 class TestServiceTest {
 
@@ -44,5 +49,18 @@ class TestServiceTest {
         String authHeader = "authHeader";
 
         testService.registerTest(dto, authHeader);
+    }
+
+    @Test
+    void testRegisterTest_Failure() {
+        User user = new User("username", "email", "password", UserRole.USER);
+        TestRegisterDTO dto = new TestRegisterDTO(LocalDateTime.now(), "testText",
+                1, 1, 1, 1, TestDifficulty.SHORT);
+        String authHeader = "authHeader";
+
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(null);
+
+        ValidationException exception = new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
+        assert exception.getMessage().equals("User not found");
     }
 }
