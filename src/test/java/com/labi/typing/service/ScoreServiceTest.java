@@ -86,4 +86,9 @@ class ScoreServiceTest {
     void testGetTopShortScore_Success() {
         scoreService.getTopShortScore();
     }
+
+    @Test
+    void testGetTopMediumScore_Success() {
+        scoreService.getTopMediumScore();
+    }
 }
