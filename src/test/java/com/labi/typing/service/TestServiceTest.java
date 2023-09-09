@@ -63,4 +63,9 @@ class TestServiceTest {
         ValidationException exception = new ValidationException("User not found", HttpStatus.UNPROCESSABLE_ENTITY);
         assert exception.getMessage().equals("User not found");
     }
+
+    @Test
+    void testGetShortTest_Success() {
+        testService.getShortTest();
+    }
 }
