@@ -91,4 +91,9 @@ class ScoreServiceTest {
     void testGetTopMediumScore_Success() {
         scoreService.getTopMediumScore();
     }
+
+    @Test
+    void testGetTopLongScore_Success() {
+        scoreService.getTopLongScore();
+    }
 }
