@@ -1,6 +1,8 @@
 package com.labi.typing.service;
 
 import com.labi.typing.enums.TestDifficulty;
+import com.labi.typing.enums.UserRole;
+import com.labi.typing.model.User;
 import com.labi.typing.repository.ScoreRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
+
+import static org.mockito.Mockito.when;
 
 class ScoreServiceTest {
 
@@ -31,9 +35,20 @@ class ScoreServiceTest {
     }
 
     @Test
-     void testRegisterScore_Success() {
+    void testRegisterScore_Success() {
+        User user = new User("username", "email", "password", UserRole.USER);
         com.labi.typing.model.Test test = new com.labi.typing.model.Test(LocalDateTime.now(), "testText",
-                1, 1, 1, 1, TestDifficulty.SHORT, null);
+                1, 1, 1, 1, TestDifficulty.SHORT, user);
         scoreService.registerScore(test);
+    }
+
+    @Test
+    void testGetUserAllScore_Success() {
+        User user = new User("username", "email", "password", UserRole.USER);
+        String authHeader = "authHeader";
+
+        when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
+
+        scoreService.getUserAllScore(authHeader);
     }
 }
