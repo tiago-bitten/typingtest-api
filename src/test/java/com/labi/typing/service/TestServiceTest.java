@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -67,5 +68,10 @@ class TestServiceTest {
     @Test
     void testGetShortTest_Success() {
         testService.getShortTest();
+    }
+
+    @Test
+    void testGetMediumTest_Success() {
+        testService.getMediumTest();
     }
 }
