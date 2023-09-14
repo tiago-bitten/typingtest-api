@@ -1,7 +1,6 @@
 package com.labi.typing.util;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.ui.ModelMap;
 
 public class ModelMapperUtil {
 
