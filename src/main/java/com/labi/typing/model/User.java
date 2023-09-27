@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -28,6 +29,9 @@ public class User extends EntityId {
     private String password;
 
     @Column(nullable = false)
+    private Instant createdAt;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
@@ -43,5 +47,6 @@ public class User extends EntityId {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.createdAt = Instant.now();
     }
 }

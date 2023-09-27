@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.Instant;
 
 import static com.labi.typing.util.ProfileImageUtil.upload;
 import static com.labi.typing.util.ResetPasswordUtil.generateRandomPassword;
@@ -135,7 +136,7 @@ public class UserService {
 
     public UserProfileDTO getProfile(String authHeader) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
-        return new UserProfileDTO(user.getUsername(), user.getEmail(), user.getProfileImgUrl());
+        return new UserProfileDTO(user.getUsername(), user.getEmail(), user.getProfileImgUrl(), user.getCreatedAt());
     }
 
     public User findByUsername(String username) {
