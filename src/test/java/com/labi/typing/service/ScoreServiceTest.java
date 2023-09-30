@@ -36,7 +36,7 @@ class ScoreServiceTest {
 
     @Test
     void testRegisterScore_Success() {
-        User user = new User("username", "email", "password", UserRole.USER);
+        User user = new User("username", "email", "password");
         com.labi.typing.model.Test test = new com.labi.typing.model.Test(LocalDateTime.now(), "testText",
                 1, 1, 1, 1, TestDifficulty.SHORT, user);
         scoreService.registerScore(test);
@@ -44,7 +44,7 @@ class ScoreServiceTest {
 
     @Test
     void testGetUserAllScore_Success() {
-        User user = new User("username", "email", "password", UserRole.USER);
+        User user = new User("username", "email", "password");
         String authHeader = "authHeader";
 
         when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
@@ -54,7 +54,7 @@ class ScoreServiceTest {
 
     @Test
     void testGetUserTopShortScore_Success() {
-        User user = new User("username", "email", "password", UserRole.USER);
+        User user = new User("username", "email", "password");
         String authHeader = "authHeader";
 
         when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
@@ -64,7 +64,7 @@ class ScoreServiceTest {
 
     @Test
     void testGetUserTopMediumScore_Success() {
-        User user = new User("username", "email", "password", UserRole.USER);
+        User user = new User("username", "email", "password");
         String authHeader = "authHeader";
 
         when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);
@@ -74,7 +74,7 @@ class ScoreServiceTest {
 
     @Test
     void testGetUserTopLongScore_Success() {
-        User user = new User("username", "email", "password", UserRole.USER);
+        User user = new User("username", "email", "password");
         String authHeader = "authHeader";
 
         when(jwtTokenProvider.getUserFromToken(authHeader, userService)).thenReturn(user);

@@ -72,9 +72,8 @@ class UserServiceTest {
 
     @Test
     void testDeleteUser_Success() {
-        User user = new User();
-        user.setUsername("username");
-        user.setPassword("encodedPassword");
+        User user = new User("username", "email", "encodedPassword");
+        user.setProfileImgUrl("profileImgUrl");
 
         UserDeleteAccountDTO dto = new UserDeleteAccountDTO("password", "password");
         String authHeader = "authHeader";

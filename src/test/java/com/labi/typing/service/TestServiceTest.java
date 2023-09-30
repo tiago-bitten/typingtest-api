@@ -42,7 +42,7 @@ class TestServiceTest {
 
     @Test
     void testRegisterTest_Success() {
-        User user = new User("username", "email", "password", UserRole.USER);
+        User user = new User("username", "email", "password");
         TestRegisterDTO dto = new TestRegisterDTO(LocalDateTime.now(), "testText",
                 1, 1, 1, 1, TestDifficulty.SHORT);
         String authHeader = "authHeader";
@@ -52,7 +52,7 @@ class TestServiceTest {
 
     @Test
     void testRegisterTest_Failure() {
-        User user = new User("username", "email", "password", UserRole.USER);
+        User user = new User("username", "email", "password");
         TestRegisterDTO dto = new TestRegisterDTO(LocalDateTime.now(), "testText",
                 1, 1, 1, 1, TestDifficulty.SHORT);
         String authHeader = "authHeader";

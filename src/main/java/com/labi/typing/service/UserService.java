@@ -1,7 +1,6 @@
 package com.labi.typing.service;
 
 import com.labi.typing.DTO.user.*;
-import com.labi.typing.enums.UserRole;
 import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
