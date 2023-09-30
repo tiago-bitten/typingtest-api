@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import static com.labi.typing.util.ProfileImageUtil.DEFAULT_PROFILE_IMG;
+import static com.labi.typing.util.ProfileImageUtil.delete;
 
 @Service
 public class UserService {
@@ -66,6 +67,7 @@ public class UserService {
         }
 
         userRepository.delete(user);
+        ProfileImageUtil.delete(user.getProfileImgUrl());
     }
 
     @Transactional

@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ProfileImageUtil {
 
     public static final String DEFAULT_PROFILE_IMG = "default-user-profile-img.png";
-    
+
     public static final String UPLOAD_PROFILE_IMG_PATH = "src/main/resources/profile-img/";
     private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png");
 
@@ -30,7 +30,7 @@ public class ProfileImageUtil {
             throw new ValidationException("File extension not allowed", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        String fileName = UUID.randomUUID().toString() + "." + file.getOriginalFilename().split("\\.")[1];
+        String fileName = UUID.randomUUID() + "." + file.getOriginalFilename().split("\\.")[1];
 
         File uploadDir = new File(UPLOAD_PROFILE_IMG_PATH);
         if (!uploadDir.exists()) {
