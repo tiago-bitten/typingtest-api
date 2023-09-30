@@ -63,6 +63,13 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/profile/image/remove")
+    public ResponseEntity<?> removeProfileImage(@RequestHeader("Authorization") String authHeader) {
+        userService.removeProfileImage(authHeader);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/profile/delete")
     public ResponseEntity<?> deleteAccount(@RequestBody @Valid UserDeleteAccountDTO dto,
                                            @RequestHeader("Authorization") String authHeader) {

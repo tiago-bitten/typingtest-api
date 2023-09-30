@@ -47,6 +47,10 @@ public class ProfileImageUtil {
     }
 
     public static void delete(String profileImgUrl) {
+        if (profileImgUrl.equals("default-user-profile-img.png")) {
+            return;
+        }
+
         File file = new File(UPLOAD_PROFILE_IMG_PATH + profileImgUrl);
 
         if (file.exists()) {

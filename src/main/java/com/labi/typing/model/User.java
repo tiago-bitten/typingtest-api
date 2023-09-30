@@ -35,7 +35,7 @@ public class User extends EntityId {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column
+    @Column(nullable = false)
     private String profileImgUrl;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
