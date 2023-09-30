@@ -6,21 +6,16 @@ import com.labi.typing.exception.custom.ValidationException;
 import com.labi.typing.model.User;
 import com.labi.typing.repository.UserRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
+import com.labi.typing.util.ProfileImageUtil;
+import com.labi.typing.util.ResetPasswordUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.core.io.Resource;
-
 
 import java.io.IOException;
-
-import static com.labi.typing.util.ProfileImageUtil.returnProfileImage;
-import static com.labi.typing.util.ProfileImageUtil.upload;
-import static com.labi.typing.util.ResetPasswordUtil.generateRandomPassword;
 
 @Service
 public class UserService {
@@ -80,7 +75,7 @@ public class UserService {
             throw new ValidationException("Demo account password cannot be reset", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        String newRandomPassword = generateRandomPassword(6);
+        String newRandomPassword = ResetPasswordUtil.generateRandomPassword(6);
         emailService.emailResetPassword(user.getEmail(), newRandomPassword);
         user.setPassword(encoder.encode(newRandomPassword));
     }
@@ -133,13 +128,22 @@ public class UserService {
             throw new ValidationException("Demo account profile image cannot be updated", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        String profileImage = upload(file);
+        if (user.getProfileImgUrl() != null) {
+            ProfileImageUtil.delete(user.getProfileImgUrl());
+        }
+
+        String profileImage = ProfileImageUtil.upload(file);
         user.setProfileImgUrl(profileImage);
     }
 
     public byte[] getProfileImage(String authHeader) throws IOException {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
-        return returnProfileImage(user.getProfileImgUrl());
+
+        if (user.getProfileImgUrl() == null) {
+            throw new ValidationException("Profile image doesn't exist", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return ProfileImageUtil.recover(user.getProfileImgUrl());
     }
 
     public UserProfileDTO getProfile(String authHeader) {

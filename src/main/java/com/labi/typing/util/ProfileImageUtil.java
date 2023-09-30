@@ -41,8 +41,18 @@ public class ProfileImageUtil {
         return fileName;
     }
 
-    public static byte[] returnProfileImage(String fileName) throws IOException {
+    public static byte[] recover(String fileName) throws IOException {
         Path filePath = Path.of(UPLOAD_PROFILE_IMG_PATH, fileName);
         return Files.readAllBytes(filePath);
+    }
+
+    public static void delete(String profileImgUrl) {
+        File file = new File(UPLOAD_PROFILE_IMG_PATH + profileImgUrl);
+
+        if (file.exists()) {
+            file.delete();
+        }
+
+        throw new ValidationException("File doesn't exist", HttpStatus.NOT_FOUND);
     }
 }
