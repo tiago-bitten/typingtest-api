@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static com.labi.typing.util.ProfileImageUtil.DEFAULT_PROFILE_IMG;
+
 @Service
 public class UserService {
 
@@ -142,12 +144,12 @@ public class UserService {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
 
         if (user.getProfileImgUrl() == null) {
-            user.setProfileImgUrl("default-user-profile-img.png");
+            user.setProfileImgUrl(DEFAULT_PROFILE_IMG);
         }
 
         return ProfileImageUtil.recover(user.getProfileImgUrl());
     }
-    
+
     @Transactional
     public void removeProfileImage(String authHeader) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
@@ -159,14 +161,14 @@ public class UserService {
         if (user.getProfileImgUrl() != null) {
             ProfileImageUtil.delete(user.getProfileImgUrl());
         }
-        user.setProfileImgUrl("default-user-profile-img.png");
+        user.setProfileImgUrl(DEFAULT_PROFILE_IMG);
     }
 
     public HttpHeaders getProfileImageMediaType(String authHeader) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
 
         if (user.getProfileImgUrl() == null) {
-            user.setProfileImgUrl("default-user-profile-img.png");
+            user.setProfileImgUrl(DEFAULT_PROFILE_IMG);
         }
 
         HttpHeaders header = new HttpHeaders();

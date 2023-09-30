@@ -1,6 +1,7 @@
 package com.labi.typing.util;
 
 import com.labi.typing.exception.custom.ValidationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,8 @@ import java.util.UUID;
 
 public class ProfileImageUtil {
 
+    public static final String DEFAULT_PROFILE_IMG = "default-user-profile-img.png";
+    
     public static final String UPLOAD_PROFILE_IMG_PATH = "src/main/resources/profile-img/";
     private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png");
 
@@ -47,7 +50,7 @@ public class ProfileImageUtil {
     }
 
     public static void delete(String profileImgUrl) {
-        if (profileImgUrl.equals("default-user-profile-img.png")) {
+        if (profileImgUrl.equals(DEFAULT_PROFILE_IMG)) {
             return;
         }
 

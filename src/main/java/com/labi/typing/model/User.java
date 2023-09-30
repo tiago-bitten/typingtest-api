@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 
+import static com.labi.typing.util.ProfileImageUtil.DEFAULT_PROFILE_IMG;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,7 +49,7 @@ public class User extends EntityId {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.profileImgUrl = "default-user-profile-img.png";
+        this.profileImgUrl = DEFAULT_PROFILE_IMG;
         this.createdAt = Instant.now();
     }
 }
