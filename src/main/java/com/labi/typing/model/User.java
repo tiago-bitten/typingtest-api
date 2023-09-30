@@ -47,6 +47,7 @@ public class User extends EntityId {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.profileImgUrl = "default-user-profile-img.png";
         this.createdAt = Instant.now();
     }
 }

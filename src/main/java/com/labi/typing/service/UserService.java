@@ -142,7 +142,7 @@ public class UserService {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
 
         if (user.getProfileImgUrl() == null) {
-            return null;
+            user.setProfileImgUrl("default-user-profile-img.png");
         }
 
         return ProfileImageUtil.recover(user.getProfileImgUrl());
@@ -152,7 +152,7 @@ public class UserService {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
 
         if (user.getProfileImgUrl() == null) {
-            return null;
+            user.setProfileImgUrl("default-user-profile-img.png");
         }
 
         HttpHeaders header = new HttpHeaders();
