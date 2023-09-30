@@ -10,7 +10,9 @@ import com.labi.typing.util.ProfileImageUtil;
 import com.labi.typing.util.ResetPasswordUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -140,10 +142,33 @@ public class UserService {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
 
         if (user.getProfileImgUrl() == null) {
-            throw new ValidationException("Profile image doesn't exist", HttpStatus.UNPROCESSABLE_ENTITY);
+            return null;
         }
 
         return ProfileImageUtil.recover(user.getProfileImgUrl());
+    }
+
+    public HttpHeaders getProfileImageMediaType(String authHeader) {
+        User user = jwtTokenProvider.getUserFromToken(authHeader, this);
+
+        if (user.getProfileImgUrl() == null) {
+            return null;
+        }
+
+        HttpHeaders header = new HttpHeaders();
+        String extension = user.getProfileImgUrl().split("\\.")[1];
+
+        switch (extension) {
+            case "jpg":
+            case "jpeg":
+                header.setContentType(MediaType.IMAGE_JPEG);
+                return header;
+            case "png":
+                header.setContentType(MediaType.IMAGE_PNG);
+                return header;
+            default:
+                throw new ValidationException("Profile image extension not allowed", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
     public UserProfileDTO getProfile(String authHeader) {

@@ -52,7 +52,5 @@ public class ProfileImageUtil {
         if (file.exists()) {
             file.delete();
         }
-
-        throw new ValidationException("File doesn't exist", HttpStatus.NOT_FOUND);
     }
 }

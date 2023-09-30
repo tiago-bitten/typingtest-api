@@ -4,15 +4,12 @@ import com.labi.typing.DTO.user.*;
 import com.labi.typing.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 @RestController
 @RequestMapping("/api/user")
@@ -28,10 +25,9 @@ public class UserController {
 
     @GetMapping("/profile/image")
     public ResponseEntity<?> getProfileImage(@RequestHeader("Authorization") String authHeader) throws IOException {
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.IMAGE_JPEG);
 
-        return new ResponseEntity<>(userService.getProfileImage(authHeader), header, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getProfileImage(authHeader),
+                userService.getProfileImageMediaType(authHeader), HttpStatus.OK);
     }
 
     @PostMapping("/register")
