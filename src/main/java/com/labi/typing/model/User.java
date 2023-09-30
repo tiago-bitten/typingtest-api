@@ -44,11 +44,11 @@ public class User extends EntityId {
     @JsonManagedReference
     private List<Test> test;
 
-    public User(String username, String email, String password,  UserRole role) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.role = UserRole.USER;
         this.profileImgUrl = DEFAULT_PROFILE_IMG;
         this.createdAt = Instant.now();
     }

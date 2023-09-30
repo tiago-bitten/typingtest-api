@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import static com.labi.typing.util.ProfileImageUtil.DEFAULT_PROFILE_IMG;
-import static com.labi.typing.util.ProfileImageUtil.delete;
 
 @Service
 public class UserService {
@@ -203,6 +202,6 @@ public class UserService {
     }
 
     private User mapUserRegisterDTOToUser(UserRegisterDTO dto) {
-        return new User(dto.username(), dto.email(), dto.password(), UserRole.USER);
+        return new User(dto.username(), dto.email(), dto.password());
     }
 }
