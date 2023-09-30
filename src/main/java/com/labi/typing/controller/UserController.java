@@ -4,7 +4,9 @@ import com.labi.typing.DTO.user.*;
 import com.labi.typing.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +26,14 @@ public class UserController {
         return new ResponseEntity<>(userService.getProfile(authHeader), HttpStatus.OK);
     }
 
+    @GetMapping("/profile/image")
+    public ResponseEntity<?> getProfileImage(@RequestHeader("Authorization") String authHeader) throws IOException {
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.IMAGE_JPEG);
+
+        return new ResponseEntity<>(userService.getProfileImage(authHeader), header, HttpStatus.OK);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegisterDTO dto) {
         userService.registerUser(dto);
@@ -38,8 +48,7 @@ public class UserController {
 
     @PutMapping("/profile/image")
     public ResponseEntity<?> uploadProfileImage(@RequestParam("file") MultipartFile file,
-                                                @RequestHeader("Authorization") String authHeader)
-            throws IOException, GeneralSecurityException {
+                                                @RequestHeader("Authorization") String authHeader) throws IOException {
         userService.uploadProfileImage(file, authHeader);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -8,13 +8,17 @@ import com.labi.typing.repository.UserRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+
 
 import java.io.IOException;
 
+import static com.labi.typing.util.ProfileImageUtil.returnProfileImage;
 import static com.labi.typing.util.ProfileImageUtil.upload;
 import static com.labi.typing.util.ResetPasswordUtil.generateRandomPassword;
 
@@ -131,6 +135,11 @@ public class UserService {
 
         String profileImage = upload(file);
         user.setProfileImgUrl(profileImage);
+    }
+
+    public byte[] getProfileImage(String authHeader) throws IOException {
+        User user = jwtTokenProvider.getUserFromToken(authHeader, this);
+        return returnProfileImage(user.getProfileImgUrl());
     }
 
     public UserProfileDTO getProfile(String authHeader) {

@@ -40,4 +40,9 @@ public class ProfileImageUtil {
 
         return fileName;
     }
+
+    public static byte[] returnProfileImage(String fileName) throws IOException {
+        Path filePath = Path.of(UPLOAD_PROFILE_IMG_PATH, fileName);
+        return Files.readAllBytes(filePath);
+    }
 }
