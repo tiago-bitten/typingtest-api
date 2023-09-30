@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.Instant;
 
 import static com.labi.typing.util.ProfileImageUtil.upload;
 import static com.labi.typing.util.ResetPasswordUtil.generateRandomPassword;

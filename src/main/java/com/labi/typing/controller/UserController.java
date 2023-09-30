@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 @RestController
 @RequestMapping("/api/user")
@@ -37,7 +38,8 @@ public class UserController {
 
     @PutMapping("/profile/image")
     public ResponseEntity<?> uploadProfileImage(@RequestParam("file") MultipartFile file,
-                                                @RequestHeader("Authorization") String authHeader) throws IOException {
+                                                @RequestHeader("Authorization") String authHeader)
+            throws IOException, GeneralSecurityException {
         userService.uploadProfileImage(file, authHeader);
         return new ResponseEntity<>(HttpStatus.OK);
     }
