@@ -5,6 +5,9 @@ import com.labi.typing.DTO.score.ScoreTopDTO;
 import com.labi.typing.DTO.score.ScoreUserTopDTO;
 import com.labi.typing.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +22,15 @@ public class ScoreController {
     private ScoreService scoreService;
 
     @GetMapping("/user")
-    public ResponseEntity<List<ScoreUserDTO>> getUserAllScore(@RequestHeader("Authorization") String authHeader) {
-        return new ResponseEntity<>(scoreService.getUserAllScore(authHeader), HttpStatus.OK);
+    public ResponseEntity<Page<ScoreUserDTO>> getUserAllScore(@RequestHeader("Authorization") String authHeader,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ScoreUserDTO> scorePage = scoreService.getUserAllScore(authHeader, pageable);
+
+        return new ResponseEntity<>(scorePage, HttpStatus.OK);
     }
+
 
     @GetMapping("/user/top/short")
     public ResponseEntity<List<ScoreUserTopDTO>> getUserTopShortScore(@RequestHeader("Authorization") String authHeader) {

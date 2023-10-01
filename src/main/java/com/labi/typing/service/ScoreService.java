@@ -9,6 +9,8 @@ import com.labi.typing.model.User;
 import com.labi.typing.repository.ScoreRepository;
 import com.labi.typing.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,12 +37,13 @@ public class ScoreService {
         return mapScoreToScoreUserDTO(score);
     }
 
-    public List<ScoreUserDTO> getUserAllScore(String authHeader) {
+    public Page<ScoreUserDTO> getUserAllScore(String authHeader, Pageable pageable) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
-        return scoreRepository.findUserAllScore(user.getUsername()).stream()
-                .map(this::mapScoreToScoreUserDTO)
-                .toList();
+        Page<Score> scorePage = scoreRepository.findUserAllScore(user.getUsername(), pageable);
+
+        return scorePage.map(this::mapScoreToScoreUserDTO);
     }
+
 
     public List<ScoreUserTopDTO> getUserTopShortScore(String authHeader) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
