@@ -51,7 +51,7 @@ public class ProfileImageUtil {
 
     public static void delete(String profileImgUrl) {
         if (profileImgUrl.equals(DEFAULT_PROFILE_IMG)) {
-            return;
+            throw new ValidationException("There is no profile image to remove", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         File file = new File(UPLOAD_PROFILE_IMG_PATH + profileImgUrl);

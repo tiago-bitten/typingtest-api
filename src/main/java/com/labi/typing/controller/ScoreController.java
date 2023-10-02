@@ -1,7 +1,7 @@
 package com.labi.typing.controller;
 
-import com.labi.typing.DTO.score.ScoreUserDTO;
 import com.labi.typing.DTO.score.ScoreTopDTO;
+import com.labi.typing.DTO.score.ScoreUserDTO;
 import com.labi.typing.DTO.score.ScoreUserTopDTO;
 import com.labi.typing.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/score")

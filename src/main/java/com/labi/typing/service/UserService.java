@@ -142,7 +142,6 @@ public class UserService {
 
     public byte[] getProfileImage(String authHeader) throws IOException {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
-
         if (user.getProfileImgUrl() == null) {
             user.setProfileImgUrl(DEFAULT_PROFILE_IMG);
         }
@@ -153,7 +152,6 @@ public class UserService {
     @Transactional
     public void removeProfileImage(String authHeader) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
-
         if (user.getUsername().equals("demo")) {
             throw new ValidationException("Demo account profile image cannot be removed", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -166,7 +164,6 @@ public class UserService {
 
     public HttpHeaders getProfileImageMediaType(String authHeader) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, this);
-
         if (user.getProfileImgUrl() == null) {
             user.setProfileImgUrl(DEFAULT_PROFILE_IMG);
         }
