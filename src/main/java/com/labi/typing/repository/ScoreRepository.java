@@ -14,20 +14,20 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
     Page<Score> findUserAllScore(String username, Pageable pageable);
 
     @Query("SELECT s FROM Score s JOIN s.test t WHERE t.user.username = ?1 AND t.testDifficulty = 'SHORT' ORDER BY s.wordsPerMinute - t.finishedTime DESC")
-    List<Score> findUserTopShortScore(String username);
+    Page<Score> findUserTopShortScore(String username, Pageable pageable);
 
     @Query("SELECT s FROM Score s JOIN s.test t WHERE t.user.username = ?1 AND t.testDifficulty = 'MEDIUM' ORDER BY s.wordsPerMinute - t.finishedTime DESC")
-    List<Score> findUserTopMediumScore(String username);
+    Page<Score> findUserTopMediumScore(String username, Pageable pageable);
 
     @Query("SELECT s FROM Score s JOIN s.test t WHERE t.user.username = ?1 AND t.testDifficulty = 'LONG' ORDER BY s.wordsPerMinute - t.finishedTime DESC")
-    List<Score> findUserTopLongScore(String username);
+    Page<Score> findUserTopLongScore(String username, Pageable pageable);
 
     @Query("SELECT s FROM Score s JOIN s.test t WHERE t.testDifficulty = 'SHORT' ORDER BY s.wordsPerMinute - t.finishedTime DESC")
-    List<Score> findTopShortScore();
+    Page<Score> findTopShortScore(Pageable pageable);
 
     @Query("SELECT s FROM Score s JOIN s.test t WHERE t.testDifficulty = 'MEDIUM' ORDER BY s.wordsPerMinute - t.finishedTime DESC")
-    List<Score> findTopMediumScore();
+    Page<Score> findTopMediumScore(Pageable pageable);
 
     @Query("SELECT s FROM Score s JOIN s.test t WHERE t.testDifficulty = 'LONG' ORDER BY s.wordsPerMinute - t.finishedTime DESC")
-    List<Score> findTopLongScore();
+    Page<Score> findTopLongScore(Pageable pageable);
 }

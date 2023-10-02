@@ -26,39 +26,51 @@ public class ScoreController {
                                                               @RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ScoreUserDTO> scorePage = scoreService.getUserAllScore(authHeader, pageable);
-
-        return new ResponseEntity<>(scorePage, HttpStatus.OK);
+        return new ResponseEntity<>(scoreService.getUserAllScore(authHeader, pageable), HttpStatus.OK);
     }
 
-
     @GetMapping("/user/top/short")
-    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopShortScore(@RequestHeader("Authorization") String authHeader) {
-        return new ResponseEntity<>(scoreService.getUserTopShortScore(authHeader), HttpStatus.OK);
+    public ResponseEntity<Page<ScoreUserTopDTO>> getUserTopShortScore(@RequestHeader("Authorization") String authHeader,
+                                                                      @RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(scoreService.getUserTopShortScore(authHeader, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/user/top/medium")
-    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopMediumScore(@RequestParam("Authorization") String authHeader) {
-        return new ResponseEntity<>(scoreService.getUserTopMediumScore(authHeader), HttpStatus.OK);
+    public ResponseEntity<Page<ScoreUserTopDTO>> getUserTopMediumScore(@RequestParam("Authorization") String authHeader,
+                                                                       @RequestParam(defaultValue = "0") int page,
+                                                                       @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(scoreService.getUserTopMediumScore(authHeader, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/user/top/long")
-    public ResponseEntity<List<ScoreUserTopDTO>> getUserTopLongScore(@RequestParam("Authorization") String authHeader) {
-        return new ResponseEntity<>(scoreService.getUserTopLongScore(authHeader), HttpStatus.OK);
+    public ResponseEntity<Page<ScoreUserTopDTO>> getUserTopLongScore(@RequestParam("Authorization") String authHeader,
+                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(scoreService.getUserTopLongScore(authHeader, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/top/short")
-    public ResponseEntity<List<ScoreTopDTO>> getTopShortScore() {
-        return new ResponseEntity<>(scoreService.getTopShortScore(), HttpStatus.OK);
+    public ResponseEntity<Page<ScoreTopDTO>> getTopShortScore(@RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(scoreService.getTopShortScore(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/top/medium")
-    public ResponseEntity<List<ScoreTopDTO>> getTopMediumScore() {
-        return new ResponseEntity<>(scoreService.getTopMediumScore(), HttpStatus.OK);
+    public ResponseEntity<Page<ScoreTopDTO>> getTopMediumScore(@RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(scoreService.getTopMediumScore(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/top/long")
-    public ResponseEntity<List<ScoreTopDTO>> getTopLongScore() {
-        return new ResponseEntity<>(scoreService.getTopLongScore(), HttpStatus.OK);
+    public ResponseEntity<Page<ScoreTopDTO>> getTopLongScore(@RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(scoreService.getTopLongScore(pageable), HttpStatus.OK);
     }
 }

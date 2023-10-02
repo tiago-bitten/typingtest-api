@@ -1,7 +1,7 @@
 package com.labi.typing.service;
 
-import com.labi.typing.DTO.score.ScoreUserDTO;
 import com.labi.typing.DTO.score.ScoreTopDTO;
+import com.labi.typing.DTO.score.ScoreUserDTO;
 import com.labi.typing.DTO.score.ScoreUserTopDTO;
 import com.labi.typing.model.Score;
 import com.labi.typing.model.Test;
@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ScoreService {
@@ -45,46 +43,37 @@ public class ScoreService {
     }
 
 
-    public List<ScoreUserTopDTO> getUserTopShortScore(String authHeader) {
+    public Page<ScoreUserTopDTO> getUserTopShortScore(String authHeader, Pageable pageable) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
-        return scoreRepository.findUserTopShortScore(user.getUsername()).stream()
-                .map(this::mapScoreToScoreUserTopDTO)
-                .toList();
+        return scoreRepository.findUserTopShortScore(user.getUsername(), pageable)
+                .map(this::mapScoreToScoreUserTopDTO);
     }
 
-    public List<ScoreUserTopDTO> getUserTopMediumScore(String authHeader) {
+    public Page<ScoreUserTopDTO> getUserTopMediumScore(String authHeader, Pageable pageable) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
-        return scoreRepository.findUserTopMediumScore(user.getUsername()).stream()
-                .map(this::mapScoreToScoreUserTopDTO)
-                .toList();
+        return scoreRepository.findUserTopMediumScore(user.getUsername(), pageable)
+                .map(this::mapScoreToScoreUserTopDTO);
     }
 
-    public List<ScoreUserTopDTO> getUserTopLongScore(String authHeader) {
+    public Page<ScoreUserTopDTO> getUserTopLongScore(String authHeader, Pageable pageable) {
         User user = jwtTokenProvider.getUserFromToken(authHeader, userService);
-        return scoreRepository.findUserTopLongScore(user.getUsername()).stream()
-                .map(this::mapScoreToScoreUserTopDTO)
-                .toList();
+        return scoreRepository.findUserTopLongScore(user.getUsername(), pageable)
+                .map(this::mapScoreToScoreUserTopDTO);
     }
 
-    public List<ScoreTopDTO> getTopShortScore() {
-        List<Score> scores = scoreRepository.findTopShortScore();
-        return scores.stream()
-                .map(this::mapScoreToScoreTopDTO)
-                .toList();
+    public Page<ScoreTopDTO> getTopShortScore(Pageable pageable) {
+        return scoreRepository.findTopShortScore(pageable)
+                .map(this::mapScoreToScoreTopDTO);
     }
 
-    public List<ScoreTopDTO> getTopMediumScore() {
-        List<Score> scores = scoreRepository.findTopMediumScore();
-        return scores.stream()
-                .map(this::mapScoreToScoreTopDTO)
-                .toList();
+    public Page<ScoreTopDTO> getTopMediumScore(Pageable pageable) {
+        return scoreRepository.findTopMediumScore(pageable)
+                .map(this::mapScoreToScoreTopDTO);
     }
 
-    public List<ScoreTopDTO> getTopLongScore() {
-        List<Score> scores = scoreRepository.findTopLongScore();
-        return scores.stream()
-                .map(this::mapScoreToScoreTopDTO)
-                .toList();
+    public Page<ScoreTopDTO> getTopLongScore(Pageable pageable) {
+        return scoreRepository.findTopLongScore(pageable)
+                .map(this::mapScoreToScoreTopDTO);
     }
 
     private Double calculateWPM(Integer words, Integer time) {
