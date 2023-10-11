@@ -28,6 +28,9 @@ public class Test extends EntityId {
     private Integer totalWords;
 
     @Column(nullable = false)
+    private Integer invalidWords;
+
+    @Column(nullable = false)
     private Integer finishedTime;
 
     @Column(nullable = false)
@@ -48,11 +51,12 @@ public class Test extends EntityId {
     @OneToOne(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Score score;
 
-    public Test(LocalDateTime testDate, String testText, Integer totalWords, Integer finishedTime,
+    public Test(LocalDateTime testDate, String testText, Integer totalWords, Integer invalidWords, Integer finishedTime,
                 Integer totalLetters, Integer incorrectLetters, TestDifficulty testDifficulty, User user) {
         this.testDate = testDate;
         this.testText = testText;
         this.totalWords = totalWords;
+        this.invalidWords = invalidWords;
         this.finishedTime = finishedTime;
         this.totalLetters = totalLetters;
         this.incorrectLetters = incorrectLetters;

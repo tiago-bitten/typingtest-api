@@ -52,6 +52,7 @@ public class TestService {
                 dto.testDate(),
                 dto.testText(),
                 dto.totalWords(),
+                dto.invalidWords(),
                 dto.finishedTime(),
                 dto.totalLetters(),
                 dto.incorrectLetters(),

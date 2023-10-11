@@ -26,7 +26,7 @@ public class ScoreService {
     private JwtTokenProvider jwtTokenProvider;
 
     public ScoreUserDTO registerScore(Test test) {
-        double wpm = calculateWPM(test.getTotalWords(), test.getFinishedTime());
+        double wpm = calculateWPM(test.getTotalWords(), test.getInvalidWords(), test.getFinishedTime());
         double acc = calculateAccuracy(test.getTotalLetters(), test.getIncorrectLetters());
         Score score = new Score(wpm, acc, test);
 
@@ -76,9 +76,9 @@ public class ScoreService {
                 .map(this::mapScoreToScoreTopDTO);
     }
 
-    private Double calculateWPM(Integer words, Integer time) {
+    private Double calculateWPM(Integer words, Integer invalidWords, Integer time) {
         double timeInMinutes = (double) time / 60;
-        double wpm = words / timeInMinutes;
+        double wpm = (words - invalidWords) / timeInMinutes;
 
         return Math.round(wpm * 100.0) / 100.0;
     }

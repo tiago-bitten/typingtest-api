@@ -13,6 +13,8 @@ public record TestRegisterDTO(
         String testText,
         @NotNull(message = "Total words cannot be null")
         Integer totalWords,
+        @NotNull(message = "Valid words cannot be null")
+        Integer invalidWords,
         @NotNull(message = "Finished time cannot be null")
         Integer finishedTime,
         @NotNull(message = "Total letters cannot be null")
